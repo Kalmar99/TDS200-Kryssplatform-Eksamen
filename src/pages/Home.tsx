@@ -1,9 +1,9 @@
 import { IonCard, IonCardContent, IonContent, IonHeader, IonIcon, IonImg, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonItemGroup, IonPage, IonSlide, IonSlides, IonTitle, IonToolbar, IonVirtualScroll } from '@ionic/react';
 import React, { useState } from 'react';
 import {image, search} from 'ionicons/icons'
-import ExploreContainer from '../components/ExploreContainer';
 import {auth} from '../utils/nhost'
 import styled from 'styled-components'
+import Trip from '../components/Trip';
 
 const Home: React.FC = () => {
 
@@ -66,11 +66,7 @@ const Home: React.FC = () => {
           </IonItem>
           <IonInfiniteScroll>
             <IonInfiniteScrollContent>
-              <IonItem lines='none'>
-                    <TripImageContainer>
-                        <IonImg src='./assets/img/lake.jpg' />
-                    </TripImageContainer>
-              </IonItem>
+                    <Trip img='./assets/img/lake.jpg' title='Mjøsa' description='Mjøsa er en av landes flotteste innskjøer. Med et areal på 365 kvadratkilometer er den Norges største innsjø og den 35. største i Europa. En fantastisk tur for både fiske og bading' link='null' />
             </IonInfiniteScrollContent>
           </IonInfiniteScroll>
       </IonContent>
