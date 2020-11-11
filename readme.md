@@ -18,3 +18,4 @@ https://www.freepik.com/free-vector/summer-landscape-background-zoom-with-tent-m
 https://www.freepik.com/free-vector/flat-natutral-landscape-with-trees_5102540.htm#page=1&query=Mountain&position=20
 https://www.freepik.com/free-vector/water-sports-banner-set_6089418.htm#page=1&query=swimming&position=45
 https://www.freepik.com/free-vector/businessman-character-avatar-isolated_6769264.htm#page=1&query=avatar&position=17
+https://www.freepik.com/free-vector/explorer_4312936.htm#page=1&query=explore&position=48

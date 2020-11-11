@@ -10,6 +10,7 @@ import {config} from './utils/nhost-config'
 import Home from './pages/Home';
 import Login from './pages/Login'
 import TripDetails from './pages/TripDetails'
+import NewTrip from './pages/NewTrip'
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -50,19 +51,20 @@ const App: React.FC = () => (
             <IonRouterOutlet>
               <IonReactRouter>
                 <Switch>
-                  <Route path="/home" component={Home} exact={true} />
-                  <Route path="/detail/:id" component={TripDetails} exact={true} />
-                  <Route path="/login" component={Login} exact={true} />
-                  <Route exact path="/" render={() => <Redirect to="/home" />} />
+                  <Route path='/home' component={Home} exact={true} />
+                  <Route path='/detail/:id' component={TripDetails} exact={true} />
+                  <Route path='/newtrip' component={NewTrip} exact={true} />
+                  <Route path='/login' component={Login} exact={true} />
+                  <Route exact path='/' render={() => <Redirect to='/home' />} />
                 </Switch>
               </IonReactRouter>
             </IonRouterOutlet>
               <IonTabBar slot='bottom'>
-                  <IonTabButton tab="home" href='/home'>
+                  <IonTabButton tab='home' href='/home'>
                       <IonIcon icon={compassOutline} />
                       <IonLabel>Utforsk</IonLabel>
                   </IonTabButton>
-                  <IonTabButton tab="tur" href='/newtrip'>
+                  <IonTabButton tab='tur' href='/newtrip'>
                       <IonIcon icon={locationOutline} />
                       <IonLabel>Ny Tur</IonLabel>
                   </IonTabButton>
