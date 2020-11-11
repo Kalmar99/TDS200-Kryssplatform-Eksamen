@@ -8,6 +8,7 @@ import gql from 'graphql-tag';
 import { useQuery } from '@apollo/client';
 
 import ITrip from '../models/ITrip'
+import { Link } from 'react-router-dom';
 
 interface FetchTrips {
   trips: [ITrip]
@@ -43,8 +44,6 @@ const Home: React.FC = () => {
       </IonPage>
     )
   }
-
-  console.log(data)
 
   return (
     <IonPage>
@@ -103,7 +102,14 @@ const Home: React.FC = () => {
           </IonItem>
           <IonInfiniteScroll>
             <IonInfiniteScrollContent>
-                    {data?.trips.map( (trip) => <Trip {...trip} />)}
+                    {/*  this method of passing state through link is copied from lecture 3  */}
+                    {data?.trips.map( (trip) => 
+                    <Link style={{textDecoration: 'none'}} key={trip.id} to={{
+                      pathname:`/detail/${trip.id}`,
+                      state:{trip}
+                    }}>
+                      <Trip {...trip} />
+                    </Link>)}
             </IonInfiniteScrollContent>
           </IonInfiniteScroll>
       </IonContent>

@@ -9,6 +9,7 @@ import {config} from './utils/nhost-config'
 /*  Pages  */
 import Home from './pages/Home';
 import Login from './pages/Login'
+import TripDetails from './pages/TripDetails'
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -32,6 +33,7 @@ import styled from 'styled-components';
 import { NhostApolloProvider, NhostAuthProvider } from 'react-nhost';
 import { auth } from './utils/nhost';
 
+
 /*  
     Boilerplate nhost code copied from: 
     https://docs.nhost.io/quick-start/client-app#add-nhostapolloprovider-to-index.js
@@ -47,6 +49,7 @@ const App: React.FC = () => (
           <IonReactRouter>
             <Switch>
               <Route path="/home" component={Home} exact={true} />
+              <Route path="/detail/:id" component={TripDetails} exact={true} />
               <Route path="/login" component={Login} exact={true} />
               <Route exact path="/" render={() => <Redirect to="/home" />} />
             </Switch>

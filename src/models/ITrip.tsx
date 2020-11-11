@@ -5,7 +5,7 @@ interface ITrip {
     title: string;
     description: string;
     image_filename: string;
-    user: IUser
+    user?: IUser
 }
 
 export default ITrip

@@ -37,6 +37,7 @@ const TripContent = styled.div`
 const TripHeader = styled.h2`
     margin-bottom: 0.2rem;
     margin-top: 0;
+    font-size: 5vw;
 `;
 
 /*
