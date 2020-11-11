@@ -10,17 +10,7 @@ import { auth } from './utils/nhost';
 // Boilerplate render code copied from: 
 // https://docs.nhost.io/quick-start/client-app#add-nhostapolloprovider-to-index.js
 
-ReactDOM.render(
-    <React.StrictMode>
-        <NhostAuthProvider auth={auth}>
-            <NhostApolloProvider
-                auth={auth}
-                gqlEndpoint={config.gqlEndpoint}>
-                <App />
-            </NhostApolloProvider>
-        </NhostAuthProvider>
-  </React.StrictMode>,
-  document.getElementById("root")
+ReactDOM.render(<App />,document.getElementById("root")
 )
 
 // If you want your app to work offline and load faster, you can change

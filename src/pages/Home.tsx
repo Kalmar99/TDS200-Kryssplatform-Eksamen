@@ -1,13 +1,50 @@
-import { IonCard, IonCardContent, IonContent, IonHeader, IonIcon, IonImg, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonItemGroup, IonPage, IonSlide, IonSlides, IonTitle, IonToolbar, IonVirtualScroll } from '@ionic/react';
+import { IonCard, IonCardContent, IonContent, IonHeader, IonIcon, IonImg, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonItemGroup, IonPage, IonSlide, IonSlides, IonSpinner, IonTitle, IonToolbar, IonVirtualScroll } from '@ionic/react';
 import React, { useState } from 'react';
 import {image, search} from 'ionicons/icons'
 import {auth} from '../utils/nhost'
 import styled from 'styled-components'
 import Trip from '../components/Trip';
+import gql from 'graphql-tag';
+import { useQuery } from '@apollo/client';
+
+import ITrip from '../models/ITrip'
+
+interface FetchTrips {
+  trips: [ITrip]
+}
+
+const FETCH_TRIPS = gql`
+  query {
+    trips {
+      id
+      title
+      description
+      image_filename
+      user {
+        id
+        display_name
+      }
+    }
+  }
+`
 
 const Home: React.FC = () => {
 
-  let [loggedIn,setLoggedIn] = useState()
+  const {data,loading} = useQuery<FetchTrips>(FETCH_TRIPS)
+
+  if(loading) {
+    return (
+      <IonPage>
+        <IonContent fullscreen>
+          <IonTitle>
+            <IonSpinner name="circles" />
+          </IonTitle>
+        </IonContent>
+      </IonPage>
+    )
+  }
+
+  console.log(data)
 
   return (
     <IonPage>
@@ -66,19 +103,13 @@ const Home: React.FC = () => {
           </IonItem>
           <IonInfiniteScroll>
             <IonInfiniteScrollContent>
-                    <Trip img='./assets/img/lake.jpg' title='Mjøsa' description='Mjøsa er en av landes flotteste innskjøer. Med et areal på 365 kvadratkilometer er den Norges største innsjø og den 35. største i Europa. En fantastisk tur for både fiske og bading' link='null' />
+                    {data?.trips.map( (trip) => <Trip {...trip} />)}
             </IonInfiniteScrollContent>
           </IonInfiniteScroll>
       </IonContent>
     </IonPage>
   );
 };
-
-const TripImageContainer = styled.div`
-  width: 8rem;
-  height: 8rem;
-  overflow: hidden;
-`
 
 
 const Headline = styled.h2`
@@ -92,6 +123,7 @@ const UserAvatar = styled.img`
 
 const SearchIcon = styled(IonIcon)`
     font-size: 2rem;
+    margin-left: 0.5rem;
 `;
 
 const Category = styled.div`

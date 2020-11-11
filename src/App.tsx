@@ -1,7 +1,10 @@
 import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { IonApp, IonRouterOutlet } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+
+/*  Config  */
+import {config} from './utils/nhost-config'
 
 /*  Pages  */
 import Home from './pages/Home';
@@ -26,17 +29,31 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import styled from 'styled-components';
+import { NhostApolloProvider, NhostAuthProvider } from 'react-nhost';
+import { auth } from './utils/nhost';
+
+/*  
+    Boilerplate nhost code copied from: 
+    https://docs.nhost.io/quick-start/client-app#add-nhostapolloprovider-to-index.js
+    & refactored to same setup as shown in class. (to get rid of FindDomNode errors).
+*/
 
 const App: React.FC = () => (
-  <IonAppStyled>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route path="/home" component={Home} exact={true} />
-        <Route path="/login" component={Login} exact={true} />
-        <Route exact path="/" render={() => <Redirect to="/home" />} />
-      </IonRouterOutlet>
-    </IonReactRouter>
-  </IonAppStyled>
+  <NhostAuthProvider auth={auth}>
+      <NhostApolloProvider
+      auth={auth}
+      gqlEndpoint={config.gqlEndpoint}>
+        <IonAppStyled>
+          <IonReactRouter>
+            <Switch>
+              <Route path="/home" component={Home} exact={true} />
+              <Route path="/login" component={Login} exact={true} />
+              <Route exact path="/" render={() => <Redirect to="/home" />} />
+            </Switch>
+          </IonReactRouter>
+        </IonAppStyled>
+      </NhostApolloProvider>
+  </NhostAuthProvider>
 );
 
 const IonAppStyled = styled(IonApp)`

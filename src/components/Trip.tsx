@@ -1,31 +1,29 @@
 import { IonImg, IonItem } from '@ionic/react'
 import React from 'react'
 import styled from 'styled-components'
+import ITrip from '../models/ITrip';
 
-interface TripProps {
-    img: string,
-    title: string,
-    description: string,
-    link: string
-}
-
-const Trip = ({img,title,description,link} : TripProps) => {
+const Trip = ({id,title,description,image_filename,user} : ITrip) => {
 
     const ImgContainer = styled.div`
         width: 6rem;
         height: 6rem;
-        background: URL(${img});
+        background: URL(./assets/img/${image_filename});
         background-size: auto 100%;
         background-position: center center;
         background-repeat: no-repeat;
         border-radius: 4px;
+
+        -webkit-box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.16);
+        -moz-box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.16);
+        box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.16);
     `;
 
     return (
         <IonItem lines='none'>
             <ImgContainer slot='start' />
             <TripContent>
-                <TripHeader>Mjøsa</TripHeader>
+                <TripHeader>{title}</TripHeader>
                 <TripDescription>{description}</TripDescription>
             </TripContent>
         </IonItem>
