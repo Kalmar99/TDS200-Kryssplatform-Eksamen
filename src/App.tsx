@@ -1,8 +1,8 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { IonApp, IonRouterOutlet } from '@ionic/react';
+import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTab, IonTabBar, IonTabButton, IonTabs } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-
+import {compassOutline, personOutline,locationOutline} from 'ionicons/icons'
 /*  Config  */
 import {config} from './utils/nhost-config'
 
@@ -46,14 +46,32 @@ const App: React.FC = () => (
       auth={auth}
       gqlEndpoint={config.gqlEndpoint}>
         <IonAppStyled>
-          <IonReactRouter>
-            <Switch>
-              <Route path="/home" component={Home} exact={true} />
-              <Route path="/detail/:id" component={TripDetails} exact={true} />
-              <Route path="/login" component={Login} exact={true} />
-              <Route exact path="/" render={() => <Redirect to="/home" />} />
-            </Switch>
-          </IonReactRouter>
+          <IonTabs>
+            <IonRouterOutlet>
+              <IonReactRouter>
+                <Switch>
+                  <Route path="/home" component={Home} exact={true} />
+                  <Route path="/detail/:id" component={TripDetails} exact={true} />
+                  <Route path="/login" component={Login} exact={true} />
+                  <Route exact path="/" render={() => <Redirect to="/home" />} />
+                </Switch>
+              </IonReactRouter>
+            </IonRouterOutlet>
+              <IonTabBar slot='bottom'>
+                  <IonTabButton tab="home" href='/home'>
+                      <IonIcon icon={compassOutline} />
+                      <IonLabel>Utforsk</IonLabel>
+                  </IonTabButton>
+                  <IonTabButton tab="tur" href='/newtrip'>
+                      <IonIcon icon={locationOutline} />
+                      <IonLabel>Ny Tur</IonLabel>
+                  </IonTabButton>
+                  <IonTabButton tab="login" href='/login'>
+                      <IonIcon icon={personOutline} />
+                      <IonLabel>Min Konto</IonLabel>
+                  </IonTabButton>
+              </IonTabBar>
+          </IonTabs>
         </IonAppStyled>
       </NhostApolloProvider>
   </NhostAuthProvider>
