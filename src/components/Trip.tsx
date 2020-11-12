@@ -3,12 +3,17 @@ import React from 'react'
 import styled from 'styled-components'
 import ITrip from '../models/ITrip';
 
+import {config} from '../utils/nhost-config'
+
 const Trip = ({id,title,description,image_filename,user} : ITrip) => {
+
+
+    //https://backend-gefo14au.nhost.app/storage/o/public/
 
     const ImgContainer = styled.div`
         width: 6rem;
         height: 6rem;
-        background: URL(./assets/img/${image_filename});
+        background: URL(${config.backendUrl}/storage/o/public/${image_filename}.jpg);
         background-size: auto 100%;
         background-position: center center;
         background-repeat: no-repeat;

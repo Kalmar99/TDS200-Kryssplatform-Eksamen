@@ -1,5 +1,5 @@
 import { IonBackButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonPage, IonSpinner, IonText } from '@ionic/react';
-import React from 'react'
+import React, { useState } from 'react'
 import ITrip from '../models/ITrip'
 import ISection from '../models/ISection'
 import {arrowBack} from 'ionicons/icons'
@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/client';
 import Trip from '../components/Trip';
-
+import {config} from '../utils/nhost-config'
 
 interface ISectionResponse {
     sections: [ISection]
@@ -16,7 +16,7 @@ interface ISectionResponse {
 const TripDetails = ( props : any  ) => {
     
     /* This way of obtaining the trip object is copied from lecture 3 */
-    const trip : ITrip = props.location?.state?.trip
+    const [trip,setTrip] = useState<ITrip>(props.location?.state?.trip)
 
     const FETCH_SECTIONS = gql`
         query {
@@ -34,20 +34,18 @@ const TripDetails = ( props : any  ) => {
 
     const HeaderWithImage = styled(IonHeader)`
         height: 15rem;
-        background-image: URL(./assets/img/${trip.image_filename});
+        background-image: URL(${config.backendUrl}/storage/o/public/${trip.image_filename}.jpg);
         background-repeat: no-repeat;
         background-size: 100% 100%;
         background-blend-mode: darken;
     `;
-
-    console.log(trip)
 
     let content;
 
     if (loading) {
         content =  <IonSpinner style={{margin: 'auto'}} name="circles" />
     } else {
-        content = data?.sections.map((section) => <Trip id={0} title = {section.title} description={section.description} image_filename={section.image_name}  />)
+        content = data?.sections.map((section) => <Trip key={section.id} id={section.id} title = {section.title} description={section.description} image_filename={section.image_name}  />)
     }
     
     return (

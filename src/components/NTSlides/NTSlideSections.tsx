@@ -18,15 +18,7 @@ const NTSlideSections = ({updateSections} : NTSlideSections) => {
     const {isAvailable,getPhoto,photo} = useCamera()
     const [modal,setModal] = useState(false)
 
-    const [sections,setSections] = useState<ISection[]>([
-
-        {
-            image_name: './assets/img/fishing.jpg',
-            title: 'Fiske',
-            description: 'Her kan man fiske både ørret, sild og hval',
-            id: 0,
-        }
-    ])
+    const [sections,setSections] = useState<ISection[]>([])
     const [name, setName] = useState<string>("")
     const [description,setDescription] = useState<string>("")
     const [image,setImage] = useState<CameraPhoto>()
