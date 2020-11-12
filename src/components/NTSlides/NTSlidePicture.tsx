@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import {useCamera} from '@capacitor-community/react-hooks/camera';
 import { CameraPhoto, CameraResultType } from '@capacitor/core';
 import styled from 'styled-components';
-import { ImageDescription, ImagePreview } from './NTSlidesStyles';
+import { ImageDescription, ImagePreview, NTSColors} from './NTSlidesStyles';
 import { render } from '@testing-library/react';
 
 interface NTSlidePicture {
@@ -42,7 +42,7 @@ const NTSlidePicture = ({setPicture,hasInput} : NTSlidePicture) => {
             <IonItemGroup>
                 <h2>Ta et bilde av turen</h2>
                 <ImagePreview src={photo?.dataUrl} />
-                <ImageDescription style={(!shownMsg && !hasInput ? {color: '#D64545'} : {})}>{text}</ImageDescription>
+                <ImageDescription style={(!shownMsg && !hasInput ? {color: NTSColors.error} : {})}>{text}</ImageDescription>
                 <IonButton onClick={triggerCamera}>Ta Bilde</IonButton>
             </IonItemGroup>
         </IonSlide>

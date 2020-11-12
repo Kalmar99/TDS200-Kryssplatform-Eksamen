@@ -24,3 +24,18 @@ export const Input = styled(IonInput)`
     border-radius: 4px;
 `;
 
+export const ErrorMsg = styled.p`
+    font-size: 3vw;
+    color: #D64545;
+`;
+
+export const SuccessMsg = styled.p`
+    font-size: 3vw;
+    color: #4ABF41;
+`;
+
+
+export const NTSColors = {
+    error: '#D64545',
+    success: '#4ABF41'
+}
