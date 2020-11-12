@@ -171,7 +171,6 @@ const NewTrip = () => {
             case 2:
                 swiper.allowSlideNext = (title != undefined) 
                 setHasInput(title != undefined)
-                console.log(title != undefined)
             break;
             case 3:
                 swiper.allowSlideNext = (picture != undefined)

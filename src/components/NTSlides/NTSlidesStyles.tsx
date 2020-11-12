@@ -20,7 +20,7 @@ export const ImageDescription = styled.p`
 `;
 
 export const Input = styled(IonInput)`
-    border: 2px solid gray;
+    border: 2px solid #4D4D4D;
     border-radius: 4px;
 `;
 

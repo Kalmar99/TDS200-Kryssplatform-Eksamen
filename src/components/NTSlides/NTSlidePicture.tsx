@@ -4,15 +4,16 @@ import {useCamera} from '@capacitor-community/react-hooks/camera';
 import { CameraPhoto, CameraResultType } from '@capacitor/core';
 import styled from 'styled-components';
 import { ImageDescription, ImagePreview } from './NTSlidesStyles';
+import { render } from '@testing-library/react';
 
 interface NTSlidePicture {
     setPicture: (picture: CameraPhoto) => void;
     hasInput: boolean;
 }
 
-const NTSlidePicture = ({setPicture} : NTSlidePicture) => {
+const NTSlidePicture = ({setPicture,hasInput} : NTSlidePicture) => {
 
-    let [hasAsked,setAsked] = useState(false)
+    let [shownMsg,setShownMsg] = useState<boolean>(false)
 
     /*  The camera function and hook is copied from lecture 7 */
     const {isAvailable,getPhoto,photo} = useCamera()
@@ -22,9 +23,10 @@ const NTSlidePicture = ({setPicture} : NTSlidePicture) => {
             resultType: CameraResultType.DataUrl,
             quality: 20,
             allowEditing: false
-        }).then ( photo =>
-           setPicture(photo) 
-        )
+        }).then ( photo => {
+            setPicture(photo)
+            setShownMsg(true)
+        })
     }
 
     let text = ""
@@ -40,7 +42,7 @@ const NTSlidePicture = ({setPicture} : NTSlidePicture) => {
             <IonItemGroup>
                 <h2>Ta et bilde av turen</h2>
                 <ImagePreview src={photo?.dataUrl} />
-                <ImageDescription>{text}</ImageDescription>
+                <ImageDescription style={(!shownMsg && !hasInput ? {color: '#D64545'} : {})}>{text}</ImageDescription>
                 <IonButton onClick={triggerCamera}>Ta Bilde</IonButton>
             </IonItemGroup>
         </IonSlide>

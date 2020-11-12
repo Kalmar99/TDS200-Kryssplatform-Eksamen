@@ -17,7 +17,7 @@ const NTSlideTitle = ({setTitle,hasInput} : NTSlideTitle) => {
 
     if (!hasInput && !shownFeedback) {
         setStyle({
-            border: '2px solid red'
+            border: '2px solid #D64545'
         })
         setDisplayText(true)
         setFeedback(true)
@@ -29,7 +29,7 @@ const NTSlideTitle = ({setTitle,hasInput} : NTSlideTitle) => {
                 <h2>Hva heter destinasjonen?</h2>
                 <Input style={styleobject} type="text" placeholder="Navn på destinasjon" onIonInput={(e : any) => {
                     setTitle(e.target.value); 
-                    setStyle({border: '2px solid green'});
+                    setStyle({border: '2px solid #4ABF41'});
                     setDisplayText(false)
                 }} />
                 { (displayText) ? <ErrorMsg>Dette feltet kan ikke være blankt</ErrorMsg> : displayText != undefined && <SuccessMsg>Godkjent</SuccessMsg>}
@@ -41,12 +41,12 @@ const NTSlideTitle = ({setTitle,hasInput} : NTSlideTitle) => {
 
 const ErrorMsg = styled.p`
     font-size: 3vw;
-    color: red;
+    color: #D64545;
 `;
 
 const SuccessMsg = styled.p`
     font-size: 3vw;
-    color: green;
+    color: #4ABF41;
 `;
 
 export default NTSlideTitle;
