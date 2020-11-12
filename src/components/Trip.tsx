@@ -16,7 +16,7 @@ const Trip = ({id,title,description,image_filename,user} : ITrip) => {
 
         -webkit-box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.16);
         -moz-box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.16);
-        box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.16);
+        box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.16); 
     `;
 
     return (

@@ -47,12 +47,6 @@ const Home: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <SearchIcon slot="start" icon={search} size="medium" />
-          <UserAvatar slot="end"  src="./assets/img/avatar.jpg"  />
-        </IonToolbar>
-      </IonHeader>
       <IonContent fullscreen>
           <IonItem lines={'none'}>
               <h2>Utforsk</h2>

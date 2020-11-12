@@ -1,16 +1,17 @@
 import { useCamera } from '@capacitor-community/react-hooks/camera';
 import { CameraPhoto, CameraResultType } from '@capacitor/core';
 import { IonPage, IonHeader, IonToolbar, IonContent, IonSlides } from '@ionic/react';
-import { search } from 'ionicons/icons';
 import React, { useState } from 'react'
 import styled from 'styled-components';
-import DescriptionSlide from '../components/NewPostSlides/DescriptionSlide';
-import InfoSlide from '../components/NewPostSlides/InfoSlide';
-import PictureSlide from '../components/NewPostSlides/PictueSlide';
-import SectionSlide from '../components/NewPostSlides/SectionsSlide';
-import TitleSlide from '../components/NewPostSlides/TitleSlide';
+import ISection from '../models/ISection';
 
-
+/*  Slides  */
+import NTSlidePicture from '../components/NTSlides/NTSlidePicture';
+import NTSlideTitle from '../components/NTSlides/NTSlideTitle';
+import NTSlideDescription from '../components/NTSlides/NTSlideDescription';
+import NTSlideInfo from '../components/NTSlides/NTSlideInfo';
+import NTSlideSections from '../components/NTSlides/NTSlideSections';
+import NTSlidePublish from '../components/NTSlides/NTSlidePublish';
 
 const NewTrip = () => {
 
@@ -18,6 +19,8 @@ const NewTrip = () => {
 
     const [title, setTitle] = useState<string>()
     const [picture,setPicture] = useState<CameraPhoto>()
+    const [description,setDescription] = useState<string>()
+    const [sections,setSections] = useState<ISection[]>([])
 
 
     let dots = []
@@ -34,10 +37,10 @@ const NewTrip = () => {
                 display: inline-block;
                 margin: .2rem;
             `;
-            dots.push(<IndexDot />)
+            dots.push(<IndexDot key={i} />)
         }
 
-        let remaining = (5 - index)
+        let remaining = (6 - index)
         if(remaining > 0) {
             for(let i = 0; i < remaining; i++) {
                 const IndexDot = styled.div`
@@ -49,10 +52,14 @@ const NewTrip = () => {
                 margin: .2rem;
                 `;
 
-                dots.push(<IndexDot />)
+                dots.push(<IndexDot key={i * 145 / 5000 + (new Date().getTime() ) } />)
             }
         }
  
+    }
+
+    const publish = () => {
+        console.log("Done")
     }
 
 
@@ -63,11 +70,12 @@ const NewTrip = () => {
                     {dots.map((dot) => dot)}
                 </DotsRow>
                 <Slideshow onIonSlideNextEnd={ () => setIndex((old) => old+=1)} onIonSlidePrevEnd={ () => setIndex((old) => old-=1) }>
-                   <InfoSlide />
-                   <TitleSlide setTitle={setTitle}/>
-                   <PictureSlide setPicture={setPicture} />
-                   <DescriptionSlide />
-                   <SectionSlide />
+                   <NTSlideInfo />
+                   <NTSlideTitle setTitle={setTitle}/>
+                   <NTSlidePicture setPicture={setPicture} />
+                   <NTSlideDescription setDescription={setDescription}/>
+                   <NTSlideSections updateSections={setSections}/>
+                   <NTSlidePublish publish={publish} title={title} image={picture} description={description}  sections={sections} />
                 </Slideshow>
             </IonContent>
         </IonPage>
@@ -81,7 +89,7 @@ const DotsRow = styled.div`
 `
 
 const Slideshow = styled(IonSlides)`
-    margin-top: 5rem;
+    margin-top: 3rem;
 `;
 
 

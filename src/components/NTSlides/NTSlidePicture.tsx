@@ -4,11 +4,11 @@ import {useCamera} from '@capacitor-community/react-hooks/camera';
 import { CameraPhoto, CameraResultType } from '@capacitor/core';
 import styled from 'styled-components';
 
-interface PictureSlideProps {
+interface NTSlidePicture {
     setPicture: (picture: CameraPhoto) => void
 }
 
-const PictureSlide = ({setPicture} : PictureSlideProps) => {
+const NTSlidePicture = ({setPicture} : NTSlidePicture) => {
 
     let [hasAsked,setAsked] = useState(false)
 
@@ -20,7 +20,9 @@ const PictureSlide = ({setPicture} : PictureSlideProps) => {
             resultType: CameraResultType.DataUrl,
             quality: 20,
             allowEditing: false
-        })
+        }).then ( photo =>
+           setPicture(photo) 
+        )
     }
 
     let text = ""
@@ -52,4 +54,4 @@ export const ImageDescription = styled.p`
     max-width: 14rem;
 `;
 
-export default PictureSlide;
+export default NTSlidePicture;

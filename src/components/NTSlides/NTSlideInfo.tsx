@@ -2,7 +2,7 @@ import { IonItem, IonItemGroup, IonSlide } from '@ionic/react'
 import React from 'react'
 import styled from 'styled-components'
 
-const InfoSlide = () => {
+const NTSlideInfo = () => {
     return (
         <IonSlide>
             <IonItemGroup>
@@ -32,4 +32,4 @@ const InfoDescription = styled.p`
     max-width: 18rem;
 `
 
-export default InfoSlide;
+export default NTSlideInfo;
