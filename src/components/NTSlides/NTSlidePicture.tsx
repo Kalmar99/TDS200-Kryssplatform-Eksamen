@@ -3,9 +3,11 @@ import React, { useEffect, useState } from 'react';
 import {useCamera} from '@capacitor-community/react-hooks/camera';
 import { CameraPhoto, CameraResultType } from '@capacitor/core';
 import styled from 'styled-components';
+import { ImageDescription, ImagePreview } from './NTSlidesStyles';
 
 interface NTSlidePicture {
-    setPicture: (picture: CameraPhoto) => void
+    setPicture: (picture: CameraPhoto) => void;
+    hasInput: boolean;
 }
 
 const NTSlidePicture = ({setPicture} : NTSlidePicture) => {
@@ -45,13 +47,5 @@ const NTSlidePicture = ({setPicture} : NTSlidePicture) => {
     )
 }
 
-export const ImagePreview = styled.img`
-    width: 14rem !important;
-    border-radius: 5px;
-`;
-
-export const ImageDescription = styled.p`
-    max-width: 14rem;
-`;
 
 export default NTSlidePicture;

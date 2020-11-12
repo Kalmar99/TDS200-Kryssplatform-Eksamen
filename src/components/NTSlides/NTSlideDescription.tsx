@@ -4,7 +4,8 @@ import styled from 'styled-components'
 import { InfoDescription, TextArea } from './NTSlidesStyles'
 
 interface NTSlideDescription {
-    setDescription: (description: string) => void
+    setDescription: (description: string) => void;
+    hasInput: boolean;
 }
 
 const NTSlideDescription = ({setDescription} : NTSlideDescription) => {

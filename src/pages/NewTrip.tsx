@@ -1,9 +1,10 @@
 import { useCamera } from '@capacitor-community/react-hooks/camera';
 import { CameraPhoto, CameraResultType } from '@capacitor/core';
-import { IonPage, IonHeader, IonToolbar, IonContent, IonSlides } from '@ionic/react';
-import React, { useState } from 'react'
+import { IonPage, IonHeader, IonToolbar, IonContent, IonSlides, IonAlert } from '@ionic/react';
+import React, { useRef, useState } from 'react'
 import styled from 'styled-components';
 import ISection from '../models/ISection';
+
 
 //Utils
 import {generateHash} from '../utils/utils'
@@ -145,17 +146,65 @@ const NewTrip = () => {
         })
     }
 
+    const [locked,setLocked] = useState<boolean>(true)
+
+    /*  
+    The Code for getting the swiper object is copied from here:
+    https://forum.ionicframework.com/t/get-swiper-instance-from-slides-component/186503  
+    copied function: initSwiper()
+    */
+    const [swiper,setSwiper] = useState<any>({});
+    const [hasInput,setHasInput] = useState(true)
+
+
+    const initSwiper = async function(this: any) {
+        let swiper = await this.getSwiper()
+
+        setSwiper(swiper);
+
+        
+    }
+
+    //Checking if user has provided input. if not lock the slideshow
+    const canChange = () => {
+        switch(index) {
+            case 2:
+                swiper.allowSlideNext = (title != undefined) 
+                setHasInput(title != undefined)
+                console.log(title != undefined)
+            break;
+            case 3:
+                swiper.allowSlideNext = (picture != undefined)
+                setHasInput(picture != undefined)
+            break;
+            case 4:
+                swiper.allowSlideNext = (description != undefined)
+                setHasInput(description != undefined)
+            break;
+            default:
+                swiper.allowSlideNext = true;
+                setHasInput(true)
+            break;
+        }
+    }
+    
+ 
     return (
         <IonPage>
             <IonContent fullscreen>
                 <DotsRow>
                     {dots.map((dot) => dot)}
                 </DotsRow>
-                <Slideshow onIonSlideNextEnd={ () => setIndex((old) => old+=1)} onIonSlidePrevEnd={ () => setIndex((old) => old-=1) }>
+                {/* Lock the slider if no data is typed in. */}
+                <Slideshow onIonSlidesDidLoad={initSwiper}
+                    onIonSlideNextEnd={ () => setIndex((old) => old+=1)} 
+                    onIonSlidePrevEnd={ () => setIndex((old) => old-=1)}
+                    onIonSlideTouchStart={canChange}
+                    >
                    <NTSlideInfo />
-                   <NTSlideTitle setTitle={setTitle}/>
-                   <NTSlidePicture setPicture={setPicture} />
-                   <NTSlideDescription setDescription={setDescription}/>
+                   <NTSlideTitle setTitle={setTitle} hasInput={hasInput}/>
+                   <NTSlidePicture setPicture={setPicture} hasInput={hasInput} />
+                   <NTSlideDescription setDescription={setDescription} hasInput={hasInput}/>
                    <NTSlideSections updateSections={setSections}/>
                    <NTSlidePublish publish={publish} title={title} image={picture} description={description}  sections={sections} />
                 </Slideshow>

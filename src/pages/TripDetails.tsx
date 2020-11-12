@@ -32,14 +32,6 @@ const TripDetails = ( props : any  ) => {
 
     const {data, loading} = useQuery<ISectionResponse>(FETCH_SECTIONS)
 
-    const HeaderWithImage = styled(IonHeader)`
-        height: 15rem;
-        background-image: URL(${config.backendUrl}/storage/o/public/${trip.image_filename}.jpg);
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
-        background-blend-mode: darken;
-    `;
-
     let content;
 
     if (loading) {
@@ -47,10 +39,10 @@ const TripDetails = ( props : any  ) => {
     } else {
         content = data?.sections.map((section) => <Trip key={section.id} id={section.id} title = {section.title} description={section.description} image_filename={section.image_name}  />)
     }
-    
+
     return (
         <IonPage>
-            <HeaderWithImage>
+            <HeaderWithImage style={{backgroundImage: `URL(${config.backendUrl}/storage/o/public/${trip.image_filename}.jpg)`}}>
                 <IonButtons>
                     <BackButton defaultHref="/home" />
                 </IonButtons>
@@ -72,6 +64,13 @@ const TripDetails = ( props : any  ) => {
         </IonPage>
     )
 }
+
+const HeaderWithImage = styled(IonHeader)`
+height: 15rem;
+background-repeat: no-repeat;
+background-size: 100% 100%;
+background-blend-mode: darken;
+`;
 
 const Title = styled.h2`
     margin-top: .2rem;
