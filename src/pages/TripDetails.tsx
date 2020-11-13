@@ -37,7 +37,7 @@ const TripDetails = ( props : any  ) => {
     if (loading) {
         content =  <IonSpinner style={{margin: 'auto'}} name="circles" />
     } else {
-        content = data?.sections.map((section) => <Trip key={section.id} id={section.id} title = {section.title} description={section.description} image_filename={section.image_name}  />)
+        content = data?.sections.map((section,i) => <Trip key={i} id={i} title = {section.title} description={section.description} image_filename={section.image_name}  />)
     }
 
     return (

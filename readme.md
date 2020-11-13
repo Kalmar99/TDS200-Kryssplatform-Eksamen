@@ -20,3 +20,7 @@ https://www.freepik.com/free-vector/water-sports-banner-set_6089418.htm#page=1&q
 https://www.freepik.com/free-vector/businessman-character-avatar-isolated_6769264.htm#page=1&query=avatar&position=17
 https://www.freepik.com/free-vector/explorer_4312936.htm#page=1&query=explore&position=48
 https://www.freepik.com/free-vector/active-tourist-hiking-mountain-man-wearing-backpack-enjoying-trekking-looking-snowcapped-peaks-vector-illustration-nature-wilderness-adventure-travel-concept_10606146.htm#page=1&query=adventure&position=22
+https://www.freepik.com/free-vector/traveler-man-winter-mountains-travel-journey_10385537.htm#page=1&query=Mountain%20climber&position=5
+https://www.freepik.com/free-vector/skydiving-extreme-sport-flat-with-free-style-hang-gliding-oriental-trees-mountains_6862956.htm#page=1&query=skydiving&position=25
+
+https://www.freepik.com/free-vector/people-marathon-race_4730897.htm#page=1&query=runner&position=35

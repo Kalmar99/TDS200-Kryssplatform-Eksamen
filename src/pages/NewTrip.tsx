@@ -93,9 +93,12 @@ const NewTrip = () => {
         const asyncPrepp = async (section: ISection) => {
             const imageName = `${generateHash(section.title + section.description)}-${Date.now() * Math.random()}`
             await uploadImage(section.image_name,imageName)
-            section.trip_id = id
-            section.image_name = imageName;
-            return section
+            return {
+                trip_id: id,
+                image_name: imageName,
+                title: section.title,
+                description: section.description
+            } as ISection
         }
 
         let preparedSections = sections.map( (section) => asyncPrepp(section) )

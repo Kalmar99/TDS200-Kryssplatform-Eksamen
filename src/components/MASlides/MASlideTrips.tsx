@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 
 interface MASlideTrips {
-    trips: ITrip[]
+    trips?: ITrip[]
 }
 
 const MASlideTrips = ({trips} : MASlideTrips) => {
@@ -14,7 +14,7 @@ const MASlideTrips = ({trips} : MASlideTrips) => {
         <IonSlide>
             <IonInfiniteScroll>
                 <IonInfiniteScrollContent>
-                    {trips.map(trip => <Wrapper key={trip.id}><Trip {...trip} /></Wrapper>)}
+                    {trips != undefined && trips.map(trip => <Wrapper key={trip.id}><Trip {...trip} /></Wrapper>)}
                 </IonInfiniteScrollContent>
             </IonInfiniteScroll>
         </IonSlide>

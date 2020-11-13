@@ -5,7 +5,7 @@ interface ISection {
     image_name: string;
     title: string;
     description: string;
-    id: number;
+    id?: number;
 }
 
 export default ISection

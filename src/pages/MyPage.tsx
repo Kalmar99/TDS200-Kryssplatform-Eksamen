@@ -13,26 +13,33 @@ import IUser from '../models/IUser'
 import { auth } from '../utils/nhost'
 
 
-interface FetchUserResponse {
+interface FetchDataResponse {
     users: IUser[]
+    trips: ITrip[]
 }
 
 const MyPage = (props: any) => {
 
-    /*
     const [userId,setUserId] = useState(props?.location?.state?.id)
+    const [user,setUser] = useState<IUser>()
 
-    const FETCH_USER = gql`
+    const FETCH_DATA = gql`
         query {
+            trips(where: {user_id: {_eq: "${userId}"}}) {
+                description
+                id
+                image_filename
+                title
+            }
             users(where: {id: {_eq: "${userId}"}}) {
-            avatar_url
-            display_name
-            id
-        }
-    }
-    `;
+                display_name
+                avatar_url
+            }
+      }`;
+
+    const {data, loading} = useQuery<FetchDataResponse>(FETCH_DATA);
     
-    const {data, loading} = useQuery<FetchUserResponse>(FETCH_USER)  */
+    console.log(data)
 
     /*  
     The Code for getting the swiper object is copied from here:
@@ -143,7 +150,7 @@ const MyPage = (props: any) => {
             </MyAccountHeader>
             <IonContent fullscreen>
                 <IonSlides onIonSlidesDidLoad={initSwiper}>
-                    <MASlideTrips trips={trips} />
+                    <MASlideTrips trips={data?.trips} />
                     <MASlideFollowers followers={followers} />
                     <MASlideSettings />
                 </IonSlides>
