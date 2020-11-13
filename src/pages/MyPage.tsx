@@ -1,10 +1,14 @@
 import { useQuery } from '@apollo/client'
-import { IonContent, IonHeader, IonIcon, IonLabel, IonPage, IonSegment, IonSegmentButton } from '@ionic/react'
+import { IonContent, IonHeader, IonIcon, IonLabel, IonPage, IonSegment, IonSegmentButton, IonSlide, IonSlides } from '@ionic/react'
 import gql from 'graphql-tag'
 import { compassOutline, heart, peopleOutline, settingsOutline } from 'ionicons/icons'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import ImageRounded from '../components/Design/ImageRounded'
+import MASlideFollowers from '../components/MASlides/MASlideFollowers'
+import MASlideSettings from '../components/MASlides/MASlideSettings'
+import MASlideTrips from '../components/MASlides/MASlideTrips'
+import ITrip from '../models/ITrip'
 import IUser from '../models/IUser'
 import { auth } from '../utils/nhost'
 
@@ -30,6 +34,90 @@ const MyPage = (props: any) => {
     
     const {data, loading} = useQuery<FetchUserResponse>(FETCH_USER)  */
 
+    /*  
+    The Code for getting the swiper object is copied from here:
+    https://forum.ionicframework.com/t/get-swiper-instance-from-slides-component/186503  
+    copied function: initSwiper()
+    */
+   const [swiper,setSwiper] = useState<any>({});
+   const [hasInput,setHasInput] = useState(true)
+   const [tab,setTab] = useState('trips')
+ 
+   const initSwiper = async function(this: any) {
+       let swiper = await this.getSwiper()
+
+       //swiper.allowTouchMove = false;
+       swiper.on('slideChange',() => {
+           switch(swiper.realIndex) {
+               case 0:
+                setTab('trips')
+               break;
+               case 1:
+                setTab('followers')
+               break;
+               case 2:
+                setTab('settings')
+               break;
+           }
+       })
+       setSwiper(swiper);  
+   }
+
+
+    const trips = [
+        {
+            id: 0,
+            title: 'Min Testpost',
+            description: 'Dette er en spennende test',
+            image_filename: '893711671419.693474510953',
+            user: {
+                id: '1',
+                display_name: 'Ola Nordmann'
+            } as IUser
+        } as ITrip,
+        {
+            id: 1,
+            title: 'Min Post2',
+            description: 'Dette er en spennende test2',
+            image_filename: '625329153-1330427686082.5637',
+            user: {
+                id: '1',
+                display_name: 'Ola Nordmann'
+            } as IUser
+        } as ITrip
+    ]
+
+    const followers = [
+        {
+            id: '1',
+            display_name: 'Ola Nordmann'
+        } as IUser,
+        {
+            id: '2',
+            display_name: 'Kari Nordmann'
+        } as IUser
+    ]
+
+    const changeTab = (tab: string) => {
+
+        /* reference: https://swiperjs.com/api/#methods  */
+
+        let time = 2;
+
+        switch (tab) {
+            case 'trips':
+                swiper.slideTo(0,time)
+            break;
+            case 'followers':
+                swiper.slideTo(1,time)
+            break;
+            case 'settings':
+                swiper.slideTo(2,time)
+            break
+
+        }
+    }
+
     return (
         <IonPage>
             <MyAccountHeader>
@@ -38,23 +126,27 @@ const MyPage = (props: any) => {
                     <DisplayName>Ola Nordmann</DisplayName>
                 </div>
 
-                <TabBar value='trips'>
+                <TabBar value={tab} onIonChange={(e : any) => changeTab(e.detail.value)}>
                     <TabButon value='trips'> 
                         <IonIcon icon={compassOutline} />
                         <IonLabel>Turer</IonLabel>
                     </TabButon>
-                    <TabButon value='følgere'>
+                    <TabButon value='followers'>
                         <IonIcon icon={peopleOutline} />
                         <IonLabel>Følgere</IonLabel>
                     </TabButon>
-                    <TabButon value='instillinger'>
+                    <TabButon value='settings'>
                         <IonIcon icon={settingsOutline} />
                         <IonLabel>Instillinger</IonLabel>
                     </TabButon>
                 </TabBar>
             </MyAccountHeader>
-            <IonContent>
-                
+            <IonContent fullscreen>
+                <IonSlides onIonSlidesDidLoad={initSwiper}>
+                    <MASlideTrips trips={trips} />
+                    <MASlideFollowers followers={followers} />
+                    <MASlideSettings />
+                </IonSlides>
             </IonContent>
         </IonPage>
     )
