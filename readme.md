@@ -19,3 +19,4 @@ https://www.freepik.com/free-vector/flat-natutral-landscape-with-trees_5102540.h
 https://www.freepik.com/free-vector/water-sports-banner-set_6089418.htm#page=1&query=swimming&position=45
 https://www.freepik.com/free-vector/businessman-character-avatar-isolated_6769264.htm#page=1&query=avatar&position=17
 https://www.freepik.com/free-vector/explorer_4312936.htm#page=1&query=explore&position=48
+https://www.freepik.com/free-vector/active-tourist-hiking-mountain-man-wearing-backpack-enjoying-trekking-looking-snowcapped-peaks-vector-illustration-nature-wilderness-adventure-travel-concept_10606146.htm#page=1&query=adventure&position=22

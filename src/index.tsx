@@ -7,8 +7,6 @@ import {config} from './utils/nhost-config'
 import { auth } from './utils/nhost';
 
 
-// Boilerplate render code copied from: 
-// https://docs.nhost.io/quick-start/client-app#add-nhostapolloprovider-to-index.js
 
 ReactDOM.render(<App />,document.getElementById("root")
 )

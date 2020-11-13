@@ -1,10 +1,8 @@
 import { IonButton, IonItemGroup, IonSlide } from '@ionic/react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {useCamera} from '@capacitor-community/react-hooks/camera';
 import { CameraPhoto, CameraResultType } from '@capacitor/core';
-import styled from 'styled-components';
 import { ImageDescription, ImagePreview, NTSColors} from './NTSlidesStyles';
-import { render } from '@testing-library/react';
 
 interface NTSlidePicture {
     setPicture: (picture: CameraPhoto) => void;
