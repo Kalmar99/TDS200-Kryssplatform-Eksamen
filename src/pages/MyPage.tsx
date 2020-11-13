@@ -3,11 +3,14 @@ import { IonContent, IonHeader, IonIcon, IonLabel, IonPage, IonSegment, IonSegme
 import gql from 'graphql-tag'
 import { compassOutline, heart, peopleOutline, settingsOutline } from 'ionicons/icons'
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import ImageRounded from '../components/Design/ImageRounded'
+import FollowButton from '../components/FollowButton'
 import MASlideFollowers from '../components/MASlides/MASlideFollowers'
 import MASlideSettings from '../components/MASlides/MASlideSettings'
 import MASlideTrips from '../components/MASlides/MASlideTrips'
+import IFollower from '../models/IFollower'
 import ITrip from '../models/ITrip'
 import IUser from '../models/IUser'
 import { auth } from '../utils/nhost'
@@ -16,31 +19,44 @@ import { auth } from '../utils/nhost'
 interface FetchDataResponse {
     users: IUser[]
     trips: ITrip[]
+    followers: IFollower[]
 }
 
 const MyPage = (props: any) => {
 
+    //This is the user id that belongs to the data on this page
     const [userId,setUserId] = useState(props?.location?.state?.id)
+    
     const [user,setUser] = useState<IUser>()
+
+    console.log(userId)
+    
+    //This is the user id of the user viewing this page!
+    const [userSelf,setUserSelf] = useState<string>(auth.getClaim('x-hasura-user-id'))
 
     const FETCH_DATA = gql`
         query {
             trips(where: {user_id: {_eq: "${userId}"}}) {
-                description
-                id
-                image_filename
-                title
+              description
+              id
+              image_filename
+              title
             }
             users(where: {id: {_eq: "${userId}"}}) {
-                display_name
-                avatar_url
+              display_name
+              avatar_url
             }
-      }`;
+            followers(where: {user_id: {_eq: "${userId}"}}) {
+              followed_by
+              user {
+                avatar_url
+                display_name
+              }
+            }
+          }`;
 
     const {data, loading} = useQuery<FetchDataResponse>(FETCH_DATA);
-    
-    console.log(data)
-
+   
     /*  
     The Code for getting the swiper object is copied from here:
     https://forum.ionicframework.com/t/get-swiper-instance-from-slides-component/186503  
@@ -70,41 +86,6 @@ const MyPage = (props: any) => {
        setSwiper(swiper);  
    }
 
-
-    const trips = [
-        {
-            id: 0,
-            title: 'Min Testpost',
-            description: 'Dette er en spennende test',
-            image_filename: '893711671419.693474510953',
-            user: {
-                id: '1',
-                display_name: 'Ola Nordmann'
-            } as IUser
-        } as ITrip,
-        {
-            id: 1,
-            title: 'Min Post2',
-            description: 'Dette er en spennende test2',
-            image_filename: '625329153-1330427686082.5637',
-            user: {
-                id: '1',
-                display_name: 'Ola Nordmann'
-            } as IUser
-        } as ITrip
-    ]
-
-    const followers = [
-        {
-            id: '1',
-            display_name: 'Ola Nordmann'
-        } as IUser,
-        {
-            id: '2',
-            display_name: 'Kari Nordmann'
-        } as IUser
-    ]
-
     const changeTab = (tab: string) => {
 
         /* reference: https://swiperjs.com/api/#methods  */
@@ -130,9 +111,9 @@ const MyPage = (props: any) => {
             <MyAccountHeader>
                 <div style={{marginTop: '3rem'}}>
                     <ImageRounded url='./assets/img/avatar.jpg' x='' y='' w='8rem' h='8rem' size='100%'/>
-                    <DisplayName>Ola Nordmann</DisplayName>
+                    <DisplayName>{data?.users[0].display_name}</DisplayName>
+                    <FollowButton target={userId} user_id={userSelf}/>
                 </div>
-
                 <TabBar value={tab} onIonChange={(e : any) => changeTab(e.detail.value)}>
                     <TabButon value='trips'> 
                         <IonIcon icon={compassOutline} />
@@ -142,17 +123,17 @@ const MyPage = (props: any) => {
                         <IonIcon icon={peopleOutline} />
                         <IonLabel>Følgere</IonLabel>
                     </TabButon>
-                    <TabButon value='settings'>
+                   { (userId == userSelf) && <TabButon value='settings'>
                         <IonIcon icon={settingsOutline} />
                         <IonLabel>Instillinger</IonLabel>
-                    </TabButon>
+                    </TabButon>}
                 </TabBar>
             </MyAccountHeader>
             <IonContent fullscreen>
                 <IonSlides onIonSlidesDidLoad={initSwiper}>
                     <MASlideTrips trips={data?.trips} />
-                    <MASlideFollowers followers={followers} />
-                    <MASlideSettings />
+                    <MASlideFollowers followers={data?.followers} />
+                    {(userId == userSelf) && <MASlideSettings />}
                 </IonSlides>
             </IonContent>
         </IonPage>
@@ -215,7 +196,7 @@ const TabBar = styled(IonSegment)`
 
 const MyAccountHeader = styled(IonHeader)`
     background: #F8F8F8;
-    height: 19rem;
+    height: 20rem;
     position: relative;
 `;
 

@@ -18,7 +18,8 @@ const Register = () => {
         try {
             if( username != undefined && email != undefined && password != undefined) {
                 await auth.register(email!, password!, { display_name: username! });
-                history.push('/account')
+                let id = await auth.getClaim('x-hasura-user-id')
+                history.push(`/account/${id}`,{id:id})
             } 
         } catch(error) {
             console.log(error)

@@ -22,7 +22,7 @@ const Login : React.FC = () => {
         try {
             await auth.login(username,password)
             let id = await auth.getClaim('x-hasura-user-id')
-            history.push('/account',{id:id})
+            history.push(`/account/${id}`,{id:id})
         } catch(error) {
         
             setError('Feil Brukernavn eller passord')

@@ -1,6 +1,9 @@
+import { sign } from 'crypto';
 import React from 'react'
 import { useAuth } from 'react-nhost';
 import { Redirect, Route } from 'react-router-dom';
+import MyPage from '../pages/MyPage';
+import { auth } from '../utils/nhost';
 
 /* Copied from  Lecture 9  */
 
@@ -21,3 +24,6 @@ const ProtectedRoute = ({component,path,exact} : ProtectedRoute) => {
 
 export default ProtectedRoute;
 
+
+
+  

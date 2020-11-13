@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTab, IonTabBar, IonTabButton, IonTabs } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
@@ -37,20 +37,42 @@ import { auth } from './utils/nhost';
 import MyPage from './pages/MyPage';
 import ProtectedRoute from './components/ProtectedRoute';
 
-
-
 /*  
     Boilerplate nhost code copied from: 
     https://docs.nhost.io/quick-start/client-app#add-nhostapolloprovider-to-index.js
     & refactored to same setup as shown in class. (to get rid of FindDomNode errors).
 */
 
-const App: React.FC = () => (
+const App: React.FC = () => {
+
+  const [loggedIn,setLoggedIn] = useState(auth.isAuthenticated())
+
+  useEffect(() => {
+    setLoggedIn(auth.isAuthenticated())
+  })
+
+  let accountTab;
+
+  if(loggedIn) {
+    accountTab = <IonTabButton tab="login" href={`/login`}>
+    <IonIcon icon={personOutline} />
+    <IonLabel>Min Bruker</IonLabel>
+  </IonTabButton>
+  } else {
+    accountTab = <IonTabButton tab="login" href={`/login`}>
+    <IonIcon icon={personOutline} />
+    <IonLabel>Logg Inn</IonLabel>
+  </IonTabButton>
+  }
+
+  console.log('User is logged in:',loggedIn)
+
+  return (
   <NhostAuthProvider auth={auth}>
       <NhostApolloProvider
-      auth={auth}
-      gqlEndpoint={config.gqlEndpoint}>
-        <IonAppStyled>
+          auth={auth}
+          gqlEndpoint={config.gqlEndpoint}>
+            <IonApp>
           <IonTabs>
             <IonRouterOutlet>
               <IonReactRouter>
@@ -60,8 +82,7 @@ const App: React.FC = () => (
                   <Route path='/newtrip' component={NewTrip} exact={true} />
                   <Route path='/login' component={Login} exact={true} />
                   <Route path='/register' component={Register} exact={true} />
-                  { /* <ProtectedRoute path='/account' component={MyPage} exact={true} /> */}
-                  <Route path='/account' component={MyPage} exact={true} />
+                  <ProtectedRoute path='/account/:id' component={MyPage} exact={true} /> 
                   <Route exact path='/' render={() => <Redirect to='/home' />} />
                 </Switch>
               </IonReactRouter>
@@ -75,16 +96,13 @@ const App: React.FC = () => (
                       <IonIcon icon={locationOutline} />
                       <IonLabel>Ny Tur</IonLabel>
                   </IonTabButton>
-                  <IonTabButton tab="login" href='/login'>
-                      <IonIcon icon={personOutline} />
-                      <IonLabel>Min Konto</IonLabel>
-                  </IonTabButton>
-              </IonTabBar>
+                  { accountTab }
+                </IonTabBar>
           </IonTabs>
-        </IonAppStyled>
+          </IonApp>
       </NhostApolloProvider>
   </NhostAuthProvider>
-);
+)};
 
 const IonAppStyled = styled(IonApp)`
   background-color: #FFFAFF;
