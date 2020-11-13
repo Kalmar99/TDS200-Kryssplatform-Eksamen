@@ -6,8 +6,7 @@ import {config} from './nhost-config'
 */
 
 const nhostConfig = {
-    base_url: config.backendUrl,
-    use_cookies: false
+    base_url: config.backendUrl
 }
 
 nhost.initializeApp(nhostConfig)

@@ -72,6 +72,10 @@ const NTSlideSections = ({updateSections} : NTSlideSections) => {
         
     }
 
+    const removeSection = (id: number) => {
+        setSections((current) => current.filter( section => section.id != id))
+    }
+
     return (
         <IonSlide>
             <IonModal isOpen={modal}>
@@ -96,7 +100,7 @@ const NTSlideSections = ({updateSections} : NTSlideSections) => {
                 <InfoDescription>Finnes det noen spesielle aktiviteter man kan gjøre på denne turen. F.eks fisking, bading, klatring osv</InfoDescription>
                 <IonButton className="add" onClick={() => setModal(true)}>Legg til Aktivitet</IonButton>
                 <p>Aktiviteter:</p>
-                {sections.map((section) => <SectionDisplay key={section.title + section.image_name} title={section.title} description={section.description} image={section.image_name} />)}
+                {sections.map((section) => <SectionDisplay key={section.title + section.image_name} title={section.title} description={section.description} image={section.image_name} id={section.id} remove={removeSection} />)}
                 <p className="info" >Når du er ferdig, sveip til høyre</p>
             </Group>
         </IonSlide>

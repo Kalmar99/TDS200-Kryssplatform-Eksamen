@@ -200,12 +200,12 @@ const NewTrip = () => {
                     onIonSlidePrevEnd={ () => setIndex((old) => old-=1)}
                     onIonSlideTouchStart={canChange}
                     >
-                   <NTSlideInfo />
-                   <NTSlideTitle setTitle={setTitle} hasInput={hasInput}/>
-                   <NTSlidePicture setPicture={setPicture} hasInput={hasInput} />
-                   <NTSlideDescription setDescription={setDescription} hasInput={hasInput}/>
-                   <NTSlideSections updateSections={setSections}/>
-                   <NTSlidePublish publish={publish} title={title} image={picture} description={description}  sections={sections} />
+                    <NTSlideInfo />
+                    <NTSlideTitle setTitle={setTitle} hasInput={hasInput}/>
+                    <NTSlidePicture setPicture={setPicture} hasInput={hasInput} />
+                    <NTSlideDescription setDescription={setDescription} hasInput={hasInput}/>
+                    <NTSlideSections updateSections={setSections}/>
+                    <NTSlidePublish publish={publish} title={title} image={picture} description={description}  sections={sections} />
                 </Slideshow>
             </IonContent>
         </IonPage>

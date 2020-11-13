@@ -11,6 +11,7 @@ import Home from './pages/Home';
 import Login from './pages/Login'
 import TripDetails from './pages/TripDetails'
 import NewTrip from './pages/NewTrip'
+import Register from './pages/Register';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -33,6 +34,9 @@ import './theme/variables.css';
 import styled from 'styled-components';
 import { NhostApolloProvider, NhostAuthProvider } from 'react-nhost';
 import { auth } from './utils/nhost';
+import MyPage from './pages/MyPage';
+import ProtectedRoute from './components/ProtectedRoute';
+
 
 
 /*  
@@ -55,6 +59,9 @@ const App: React.FC = () => (
                   <Route path='/detail/:id' component={TripDetails} exact={true} />
                   <Route path='/newtrip' component={NewTrip} exact={true} />
                   <Route path='/login' component={Login} exact={true} />
+                  <Route path='/register' component={Register} exact={true} />
+                  { /* <ProtectedRoute path='/account' component={MyPage} exact={true} /> */}
+                  <Route path='/account' component={MyPage} exact={true} />
                   <Route exact path='/' render={() => <Redirect to='/home' />} />
                 </Switch>
               </IonReactRouter>
