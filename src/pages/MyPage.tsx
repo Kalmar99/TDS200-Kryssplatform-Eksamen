@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client'
 import { IonContent, IonHeader, IonIcon, IonLabel, IonPage, IonSegment, IonSegmentButton, IonSlide, IonSlides } from '@ionic/react'
 import gql from 'graphql-tag'
 import { compassOutline, heart, peopleOutline, settingsOutline } from 'ionicons/icons'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import ImageRounded from '../components/Design/ImageRounded'
@@ -27,11 +27,20 @@ const MyPage = (props: any) => {
     //This is the user id that belongs to the data on this page
     const [userId,setUserId] = useState(props?.location?.state?.id)
     
-    const [user,setUser] = useState<IUser>()
+    // To ensure that the id gets updated when user f.ex: presses the my account button while watching another users page
+    useEffect(() => setUserId(props?.location?.state?.id))
 
+    const [user,setUser] = useState<IUser>()
     
     //This is the user id of the user viewing this page!
-    const [userSelf,setUserSelf] = useState<string>(auth.getClaim('x-hasura-user-id'))
+
+    const [userSelf,setUserSelf] = useState<string>()
+
+    if(auth.isAuthenticated()) {
+        if(userSelf == undefined) {
+            setUserSelf(auth.getClaim('x-hasura-user-id'))
+        }
+    }
 
     const FETCH_DATA = gql`
         query {
@@ -55,6 +64,8 @@ const MyPage = (props: any) => {
           }`;
 
     const {data, loading} = useQuery<FetchDataResponse>(FETCH_DATA);
+
+    
    
     /*  
     The Code for getting the swiper object is copied from here:
@@ -109,9 +120,9 @@ const MyPage = (props: any) => {
         <IonPage>
             <MyAccountHeader>
                 <div style={{marginTop: '3rem'}}>
-                    <ImageRounded url='./assets/img/avatar.jpg' x='' y='' w='8rem' h='8rem' size='100%'/>
+                    <ImageRounded url={data?.users[0].avatar_url != undefined ? data?.users[0].avatar_url : './assets/img/avatar.jpg' } x='' y='' w='8rem' h='8rem' size='100%'/>
                     <DisplayName>{data?.users[0].display_name}</DisplayName>
-                    <FollowButton target={userId} user_id={userSelf}/>
+                   { userSelf != undefined && <FollowButton target={userId} user_id={userSelf}/>}
                 </div>
                 <TabBar value={tab} onIonChange={(e : any) => changeTab(e.detail.value)}>
                     <TabButon value='trips'> 

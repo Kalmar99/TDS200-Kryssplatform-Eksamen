@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar,IonInput, IonButton, iosTransitionAnimation } from '@ionic/react'
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar,IonInput, IonButton, iosTransitionAnimation, useIonViewWillEnter } from '@ionic/react'
 import React, { useState } from 'react'
 import { useHistory } from 'react-router'
 import { auth } from '../utils/nhost'
@@ -17,6 +17,11 @@ const Login : React.FC = () => {
 
     const [error,setError] = useState<string>()
 
+    useIonViewWillEnter(() => {
+        if(auth.isAuthenticated()) {
+            history.replace("/home")
+        }
+    })
 
     const login = async () => {
         try {

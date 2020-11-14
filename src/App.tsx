@@ -57,7 +57,7 @@ const App: React.FC = () => {
 
   const history = createBrowserHistory()
 
-
+  
   return (
     <NhostAuthProvider auth={auth}>
         <NhostApolloProvider
@@ -70,7 +70,7 @@ const App: React.FC = () => {
                   <Route path='/detail/:id' component={TripDetails} exact={true} />
                   <Route path='/login' component={Login} exact={true} />
                   <Route path='/register' component={Register} exact={true} />
-                  <ProtectedRoute path='/account/:id' component={MyPage} exact={true} /> 
+                  <Route path='/account/:id' component={MyPage} exact={true} /> 
                   <ProtectedRoute path='/newtrip' component={NewTrip} exact={true} />
                   <Route exact path='/' render={() => <Redirect to='/home' />} />
               </Switch>

@@ -8,6 +8,7 @@ import gql from 'graphql-tag';
 import { useQuery } from '@apollo/client';
 import Trip from '../components/Trip';
 import {config} from '../utils/nhost-config'
+import { Link } from 'react-router-dom';
 
 interface ISectionResponse {
     sections: [ISection]
@@ -50,6 +51,10 @@ const TripDetails = ( props : any  ) => {
             <IonContent>
                 <Content>
                     <Title>{trip.title}</Title>
+                    <p>Lagt ut av: <Link to={{
+                        pathname: `/account/${trip.user?.id}`,
+                        state: {id: trip.user?.id}
+                    }}>{trip.user?.display_name}</Link></p>
                 </Content>
                 <Content>
                     <p>{trip.description}</p>

@@ -1,11 +1,13 @@
-import { IonSlide, IonTitle } from '@ionic/react';
+import { IonButton, IonSlide, IonTitle } from '@ionic/react';
 import React from 'react'
+import { auth } from '../../utils/nhost';
 
 
 const MASlideSettings = () => {
     return (
         <IonSlide>
             <p>Settings</p>
+            <IonButton onClick={() => auth.logout()}> Logg Ut </IonButton>
         </IonSlide>
     )
 }

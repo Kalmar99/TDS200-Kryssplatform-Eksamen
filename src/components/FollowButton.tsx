@@ -27,8 +27,14 @@ const FollowButton = ({target,user_id} : FollowButton) => {
 
     useEffect( () => {
         getUserID().then( id => {
-            if(id == user_id) {
+            if(id === target) {
                 setMySelf(true)
+                return;
+            }
+
+            if(id === user_id) {
+                setIsFollowing(true)
+                return;
             }
         })
     })

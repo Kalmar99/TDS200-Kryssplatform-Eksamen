@@ -1,6 +1,6 @@
 import { IonIcon, IonLabel, IonSegment, IonSegmentButton } from "@ionic/react";
 import { compassOutline, locationOutline, personOutline } from "ionicons/icons";
-import React from "react";
+import React, { useState } from "react";
 import { useAuth } from "react-nhost";
 import { useHistory } from 'react-router'
 import styled from "styled-components";
@@ -12,8 +12,6 @@ interface NavigationBar {
 
 const NavigationBar = ({history} : NavigationBar) => {
 
-    const isLoggedIn = useAuth()
-
     const changeTab = async (tab: string) => {
 
         switch(tab) {
@@ -24,15 +22,17 @@ const NavigationBar = ({history} : NavigationBar) => {
                 history.replace('/newtrip')
             break;
             case 'myaccount':
-                //If the user is logged in, navigate to his/her page. if not: let privateRoute handle the redirect
-                if(isLoggedIn) {
+                //If the user is logged in, navigate to his/her page. If not logged in redirect. 
+                //I need to put this logic here istead of using private route, since i want non users to be able to view other peoples profiles without being logged in.
+                if(auth.isAuthenticated()) {
+
                     let id = auth.getClaim('x-hasura-user-id')
                     history.replace({
                         pathname: `/account/${id}`,
                         state: {id: id}
                     })
                 } else {
-                    history.replace('/account')
+                    history.replace('/login')
                 }
             break;
         }
@@ -40,7 +40,7 @@ const NavigationBar = ({history} : NavigationBar) => {
     }
     
     return (
-        <NavigationBarStyled  value={'explore'} onIonChange={(e : any) => changeTab(e.detail.value)}>
+        <NavigationBarStyled value={'explore'} onIonChange={(e : any) => changeTab(e.detail.value)}>
             <NavigationButton value='explore' >
                 <IonIcon icon={compassOutline} />
                 <IonLabel>Utforsk</IonLabel>
@@ -56,9 +56,6 @@ const NavigationBar = ({history} : NavigationBar) => {
       </NavigationBarStyled>
     )
 }
-
-export default NavigationBar;
-
 
 const NavigationBarStyled = styled(IonSegment)`
     position:fixed;
@@ -110,4 +107,9 @@ const NavigationButton = styled(IonSegmentButton)`
         
     }
 `;
+
+
+export default NavigationBar;
+
+
 
