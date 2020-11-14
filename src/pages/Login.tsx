@@ -21,13 +21,16 @@ const Login : React.FC = () => {
     const login = async () => {
         try {
             await auth.login(username,password)
-            let id = await auth.getClaim('x-hasura-user-id')
-            history.push(`/account/${id}`,{id:id})
+            if(auth.isAuthenticated()) {
+                let id = await auth.getClaim('x-hasura-user-id')
+                //history.replace(`/account/${id}`,{id:id})
+                history.replace('/newtrip')
+            } else {
+                console.log("NOT LOGGED IN")
+            }
         } catch(error) {
-        
             setError('Feil Brukernavn eller passord')
             console.log(error)
-            
         }
     }
     
@@ -44,7 +47,6 @@ const Login : React.FC = () => {
                 <Input placeholder='Passord' type='password' onChange={(e: string) => setPassword(e)} required={true} />
                 <LogInButton onClick={login} routerAnimation = {iosTransitionAnimation}>Login</LogInButton>
                 <LogInButton onClick={() => history.push('/register')} routerAnimation = {iosTransitionAnimation}>Ny Bruker</LogInButton>
-
             </IonContent>
         </IonPage>
     )

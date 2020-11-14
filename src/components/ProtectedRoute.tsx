@@ -18,8 +18,9 @@ const ProtectedRoute = ({component,path,exact} : ProtectedRoute) => {
     const { signedIn } = useAuth()
 
     return signedIn ? 
-    <Route path ={path} component={component} exact={exact} /> :
-    <Redirect to="/login" />
+        <Route path ={path} component={component} exact={exact} /> :
+        <Redirect to="/login" />
+    
 }
 
 export default ProtectedRoute;

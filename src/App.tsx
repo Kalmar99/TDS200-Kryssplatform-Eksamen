@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTab, IonTabBar, IonTabButton, IonTabs } from '@ionic/react';
+import { Redirect, Route, Router, Switch,BrowserRouter, useHistory } from 'react-router-dom';
+import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonSegment, IonSegmentButton, IonTab, IonTabBar, IonTabButton, IonTabs } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import {compassOutline, personOutline,locationOutline} from 'ionicons/icons'
+
+import {createBrowserHistory} from 'history';
+
 /*  Config  */
 import {config} from './utils/nhost-config'
 
@@ -32,10 +35,12 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import styled from 'styled-components';
-import { NhostApolloProvider, NhostAuthProvider } from 'react-nhost';
+import { NhostApolloProvider, NhostAuthProvider, useAuth } from 'react-nhost';
 import { auth } from './utils/nhost';
 import MyPage from './pages/MyPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import NavigationBar from './components/NavigationBar';
+
 
 /*  
     Boilerplate nhost code copied from: 
@@ -45,67 +50,41 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 const App: React.FC = () => {
 
-  const [loggedIn,setLoggedIn] = useState(auth.isAuthenticated())
+  /*
+    Method of setting history manually is copied from here: 
+    https://brandoncantello.medium.com/using-history-to-navigate-your-react-app-from-outside-a-component-40ea74ba4402
+  */
 
-  useEffect(() => {
-    setLoggedIn(auth.isAuthenticated())
-  })
+  const history = createBrowserHistory()
 
-  let accountTab;
-
-  if(loggedIn) {
-    accountTab = <IonTabButton tab="login" href={`/login`}>
-    <IonIcon icon={personOutline} />
-    <IonLabel>Min Bruker</IonLabel>
-  </IonTabButton>
-  } else {
-    accountTab = <IonTabButton tab="login" href={`/login`}>
-    <IonIcon icon={personOutline} />
-    <IonLabel>Logg Inn</IonLabel>
-  </IonTabButton>
-  }
-
-  console.log('User is logged in:',loggedIn)
 
   return (
-  <NhostAuthProvider auth={auth}>
-      <NhostApolloProvider
-          auth={auth}
-          gqlEndpoint={config.gqlEndpoint}>
-            <IonApp>
-          <IonTabs>
-            <IonRouterOutlet>
-              <IonReactRouter>
-                <Switch>
+    <NhostAuthProvider auth={auth}>
+        <NhostApolloProvider
+            auth={auth}
+            gqlEndpoint={config.gqlEndpoint}>
+          <IonAppStyled>
+            <Router history={history}>
+              <Switch>
                   <Route path='/home' component={Home} exact={true} />
                   <Route path='/detail/:id' component={TripDetails} exact={true} />
-                  <Route path='/newtrip' component={NewTrip} exact={true} />
                   <Route path='/login' component={Login} exact={true} />
                   <Route path='/register' component={Register} exact={true} />
                   <ProtectedRoute path='/account/:id' component={MyPage} exact={true} /> 
+                  <ProtectedRoute path='/newtrip' component={NewTrip} exact={true} />
                   <Route exact path='/' render={() => <Redirect to='/home' />} />
-                </Switch>
-              </IonReactRouter>
-            </IonRouterOutlet>
-              <IonTabBar slot='bottom'>
-                  <IonTabButton tab='home' href='/home'>
-                      <IonIcon icon={compassOutline} />
-                      <IonLabel>Utforsk</IonLabel>
-                  </IonTabButton>
-                  <IonTabButton tab='tur' href='/newtrip'>
-                      <IonIcon icon={locationOutline} />
-                      <IonLabel>Ny Tur</IonLabel>
-                  </IonTabButton>
-                  { accountTab }
-                </IonTabBar>
-          </IonTabs>
-          </IonApp>
-      </NhostApolloProvider>
-  </NhostAuthProvider>
+              </Switch>
+              <NavigationBar history={history} />
+            </Router>
+          </IonAppStyled>
+        </NhostApolloProvider>
+    </NhostAuthProvider>
 )};
+
 
 const IonAppStyled = styled(IonApp)`
   background-color: #FFFAFF;
 `;
+
 
 export default App;

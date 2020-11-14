@@ -33,6 +33,10 @@ const Home: React.FC = () => {
 
   const {data,loading} = useQuery<FetchTrips>(FETCH_TRIPS)
 
+  const logOut = () => {
+    auth.logout();
+  }
+
   if(loading) {
     return (
       <IonPage>
@@ -94,10 +98,6 @@ const Home: React.FC = () => {
           <IonItem lines='none'>
               <Headline>Nye Turer</Headline>
           </IonItem>
-          <Link to={{
-                      pathname:`/account/3ca68c81-de81-4072-b35d-cffb496f9772`,
-                      state:{id: '3ca68c81-de81-4072-b35d-cffb496f9772'}
-                    }}>Til Test</Link>
           <IonInfiniteScroll>
             <IonInfiniteScrollContent>
                     {/*  this method of passing state through link is copied from lecture 3  */}

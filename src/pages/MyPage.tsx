@@ -29,7 +29,6 @@ const MyPage = (props: any) => {
     
     const [user,setUser] = useState<IUser>()
 
-    console.log(userId)
     
     //This is the user id of the user viewing this page!
     const [userSelf,setUserSelf] = useState<string>(auth.getClaim('x-hasura-user-id'))
