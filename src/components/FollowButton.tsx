@@ -31,11 +31,6 @@ const FollowButton = ({target,user_id} : FollowButton) => {
                 setMySelf(true)
                 return;
             }
-
-            if(id === user_id) {
-                setIsFollowing(true)
-                return;
-            }
         })
     })
 

@@ -1,6 +1,6 @@
 import ITrip from "../../models/ITrip";
 import React from 'react'
-import { IonContent, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonSlide } from "@ionic/react";
+import { IonContent, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonSlide, IonTitle } from "@ionic/react";
 import Trip from "../Trip";
 import styled from "styled-components";
 
@@ -10,6 +10,12 @@ interface MASlideTrips {
 }
 
 const MASlideTrips = ({trips} : MASlideTrips) => {
+
+
+    if(trips?.length == 0) {
+        return <IonSlide><p>Ingen turer å vise</p></IonSlide>
+    }
+
     return (
         <IonSlide>
             <IonInfiniteScroll>

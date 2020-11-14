@@ -35,10 +35,12 @@ const MyPage = (props: any) => {
     //This is the user id of the user viewing this page!
 
     const [userSelf,setUserSelf] = useState<string>()
+    const [tab,setTab] = useState('trips')
 
     if(auth.isAuthenticated()) {
         if(userSelf == undefined) {
             setUserSelf(auth.getClaim('x-hasura-user-id'))
+            setTab('trips')
         }
     }
 
@@ -74,7 +76,6 @@ const MyPage = (props: any) => {
     */
    const [swiper,setSwiper] = useState<any>({});
    const [hasInput,setHasInput] = useState(true)
-   const [tab,setTab] = useState('trips')
  
    const initSwiper = async function(this: any) {
        let swiper = await this.getSwiper()
@@ -89,7 +90,9 @@ const MyPage = (props: any) => {
                 setTab('followers')
                break;
                case 2:
-                setTab('settings')
+                if(userSelf == userId)  {
+                    setTab('settings')
+                }
                break;
            }
        })
@@ -116,6 +119,12 @@ const MyPage = (props: any) => {
         }
     }
 
+    let settings;
+
+    if(userId == userSelf) {
+        settings = <MASlideSettings />
+    }
+
     return (
         <IonPage>
             <MyAccountHeader>
@@ -133,7 +142,7 @@ const MyPage = (props: any) => {
                         <IonIcon icon={peopleOutline} />
                         <IonLabel>Følgere</IonLabel>
                     </TabButon>
-                   { (userId == userSelf) && <TabButon value='settings'>
+                   { (userSelf == userId) && <TabButon value='settings'>
                         <IonIcon icon={settingsOutline} />
                         <IonLabel>Instillinger</IonLabel>
                     </TabButon>}
@@ -143,7 +152,7 @@ const MyPage = (props: any) => {
                 <IonSlides onIonSlidesDidLoad={initSwiper}>
                     <MASlideTrips trips={data?.trips} />
                     <MASlideFollowers followers={data?.followers} />
-                    {(userId == userSelf) && <MASlideSettings />}
+                    {settings}
                 </IonSlides>
             </IonContent>
         </IonPage>

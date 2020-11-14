@@ -16,11 +16,11 @@ interface FollowersResponse {
 
 const MASlideFollowers = ({followers} : MASlideFollowers) => {
 
-    const followersFormatted = followers?.map( follower => {return follower.followed_by})
+    const followersFormatted = JSON.stringify(followers?.map( follower => {return follower.followed_by}))
 
     const FETCH_FOLLOWERS = gql`
         query {
-            users(where: {id: {_in: "${followersFormatted}"}}) {
+            users(where: {id: {_in: ${followersFormatted}}}) {
             avatar_url
             display_name
             id
@@ -32,6 +32,10 @@ const MASlideFollowers = ({followers} : MASlideFollowers) => {
 
     if(loading) {
         return <IonSlide><IonTitle>Loading...</IonTitle></IonSlide>
+    }
+
+    if(followers?.length == 0) {
+        return <IonSlide><p>Denne brukeren har ingen følgere</p></IonSlide>
     }
 
     return (
