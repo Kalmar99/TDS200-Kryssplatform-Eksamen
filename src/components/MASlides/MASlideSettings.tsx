@@ -1,9 +1,11 @@
 import { IonButton, IonSlide, IonTitle } from '@ionic/react';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { auth } from '../../utils/nhost';
 
 
 const MASlideSettings = () => {
+
+
     return (
         <IonSlide>
             <p>Settings</p>

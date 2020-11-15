@@ -3,7 +3,6 @@ import { IonContent, IonHeader, IonIcon, IonLabel, IonPage, IonSegment, IonSegme
 import gql from 'graphql-tag'
 import { compassOutline, heart, peopleOutline, settingsOutline } from 'ionicons/icons'
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import ImageRounded from '../components/Design/ImageRounded'
 import FollowButton from '../components/FollowButton'
@@ -28,12 +27,21 @@ const MyPage = (props: any) => {
     const [userId,setUserId] = useState(props?.location?.state?.id)
     
     // To ensure that the id gets updated when user f.ex: presses the my account button while watching another users page
-    useEffect(() => setUserId(props?.location?.state?.id))
+    useEffect(() => {
+        let id = props?.location?.state?.id
+        setUserId(id);
+
+        if(id === userSelf) {
+            if(swiper != undefined) {
+               swiper.allowSlideNext = true
+            }
+        }
+       
+    })
 
     const [user,setUser] = useState<IUser>()
     
     //This is the user id of the user viewing this page!
-
     const [userSelf,setUserSelf] = useState<string>()
     const [tab,setTab] = useState('trips')
 
@@ -74,25 +82,37 @@ const MyPage = (props: any) => {
     https://forum.ionicframework.com/t/get-swiper-instance-from-slides-component/186503  
     copied function: initSwiper()
     */
-   const [swiper,setSwiper] = useState<any>({});
+   const [swiper,setSwiper] = useState<any>(undefined);
    const [hasInput,setHasInput] = useState(true)
  
    const initSwiper = async function(this: any) {
        let swiper = await this.getSwiper()
+
+       swiper.update()
 
        //swiper.allowTouchMove = false;
        swiper.on('slideChange',() => {
            switch(swiper.realIndex) {
                case 0:
                 setTab('trips')
+
+                // Need to unlock it here so the user can swipe to followers tab.
+                swiper.allowSlideNext = true;
                break;
                case 1:
                 setTab('followers')
+               
+                // Need to lock the slider so user cannot access settings slide while on another users page.
+                if(userSelf !== userId) {
+                    console.log(swiper)
+                    swiper.allowSlideNext = false
+                } else {
+                    swiper.allowSlideNext = true
+                }
                break;
                case 2:
-                if(userSelf == userId)  {
+                   //No need for handling here, the settings tab wont be rendered at all if the user is not on his own page.
                     setTab('settings')
-                }
                break;
            }
        })
@@ -119,11 +139,8 @@ const MyPage = (props: any) => {
         }
     }
 
-    let settings;
-
-    if(userId == userSelf) {
-        settings = <MASlideSettings />
-    }
+    // I have to put the slides in an array becouse swiper will not recognize the settins slide unless its added at the same time as the others.
+    const slides = [ <MASlideTrips key='SlideTrips' trips={data?.trips} />,  <MASlideFollowers key='SlideFollowers' followers={data?.followers} />,<MASlideSettings key='SlideSettings' />]
 
     return (
         <IonPage>
@@ -131,7 +148,7 @@ const MyPage = (props: any) => {
                 <div style={{marginTop: '3rem'}}>
                     <ImageRounded url={data?.users[0].avatar_url != undefined ? data?.users[0].avatar_url : './assets/img/avatar.jpg' } x='' y='' w='8rem' h='8rem' size='100%'/>
                     <DisplayName>{data?.users[0].display_name}</DisplayName>
-                   { userSelf != undefined && <FollowButton target={userId} user_id={userSelf}/>}
+                   { userSelf != undefined && <FollowButton followers={data?.followers} target={userId} user_id={userSelf}/>}
                 </div>
                 <TabBar value={tab} onIonChange={(e : any) => changeTab(e.detail.value)}>
                     <TabButon value='trips'> 
@@ -150,9 +167,7 @@ const MyPage = (props: any) => {
             </MyAccountHeader>
             <IonContent fullscreen>
                 <IonSlides onIonSlidesDidLoad={initSwiper}>
-                    <MASlideTrips trips={data?.trips} />
-                    <MASlideFollowers followers={data?.followers} />
-                    {settings}
+                    {slides.map(slide => slide)}
                 </IonSlides>
             </IonContent>
         </IonPage>
@@ -162,6 +177,7 @@ const MyPage = (props: any) => {
 const DisplayName = styled.h3`
     text-align: center;
 `;
+
 
 /*
     Here i am overriding the styling several parts of the shadow dom in IonSegmentButton.

@@ -5,6 +5,7 @@ import React from 'react'
 import IFollower from '../../models/IFollower'
 import IUser from '../../models/IUser'
 import User from '../User'
+import { MaxHeight } from './MASlideTrips'
 
 interface MASlideFollowers {
     followers?: IFollower[]
@@ -39,15 +40,16 @@ const MASlideFollowers = ({followers} : MASlideFollowers) => {
     }
 
     return (
-        <IonSlide>
-            <IonInfiniteScroll>
+        <IonSlide style={{minHeight: '15rem'}}> 
+            <MaxHeight>
                 <IonInfiniteScrollContent>
                 { data?.users.map( user => <User key={user.id} {...user}/>) }
                 </IonInfiniteScrollContent>
-            </IonInfiniteScroll>
+            </MaxHeight>
         </IonSlide>
     )
 }
+
 
 //<User key={user.id} {...user} />
 

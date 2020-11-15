@@ -13,16 +13,16 @@ const MASlideTrips = ({trips} : MASlideTrips) => {
 
 
     if(trips?.length == 0) {
-        return <IonSlide><p>Ingen turer å vise</p></IonSlide>
+        return <IonSlide><MaxHeight><p>Ingen turer å vise</p></MaxHeight></IonSlide>
     }
 
     return (
         <IonSlide>
-            <IonInfiniteScroll>
+            <MaxHeight>
                 <IonInfiniteScrollContent>
                     {trips != undefined && trips.map(trip => <Wrapper key={trip.id}><Trip {...trip} /></Wrapper>)}
                 </IonInfiniteScrollContent>
-            </IonInfiniteScroll>
+            </MaxHeight>
         </IonSlide>
     )
 }
@@ -30,5 +30,12 @@ const MASlideTrips = ({trips} : MASlideTrips) => {
 const Wrapper = styled.div`
     margin-top: 1rem;
 `;
+
+export const MaxHeight = styled(IonInfiniteScroll)`
+    min-height: 25rem;
+    width: 100%;
+`;
+
+
 
 export default MASlideTrips;
