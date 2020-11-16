@@ -20,8 +20,8 @@ const TripDetails = ( props : any  ) => {
     const [trip,setTrip] = useState<ITrip>(props.location?.state?.trip)
 
     const FETCH_SECTIONS = gql`
-        query {
-            sections(where: {trip_id: {_eq: ${trip.id}}}) {
+        query fetchSection($userID : uuid) {
+            sections(where: {trip_id: {_eq: $userID}}) {
                 trip_id
                 title
                 image_name
@@ -31,7 +31,11 @@ const TripDetails = ( props : any  ) => {
         }
     `;
 
-    const {data, loading} = useQuery<ISectionResponse>(FETCH_SECTIONS)
+    const {data, loading} = useQuery<ISectionResponse>(FETCH_SECTIONS,{
+        variables: {
+            userID: trip.user?.id
+        }
+    })
 
     let content;
 
