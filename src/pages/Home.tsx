@@ -1,4 +1,4 @@
-import { IonCard, IonCardContent, IonContent, IonHeader, IonIcon, IonImg, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonItemGroup, IonPage, IonSlide, IonSlides, IonSpinner, IonTitle, IonToolbar, IonVirtualScroll } from '@ionic/react';
+import { IonCard, IonCardContent, IonContent, IonFooter, IonHeader, IonIcon, IonImg, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonItemGroup, IonPage, IonSlide, IonSlides, IonSpinner, IonTitle, IonToolbar, IonVirtualScroll } from '@ionic/react';
 import React, { useState } from 'react';
 import {image, search} from 'ionicons/icons'
 import {auth} from '../utils/nhost'
@@ -9,6 +9,7 @@ import { useQuery } from '@apollo/client';
 
 import ITrip from '../models/ITrip'
 import { Link } from 'react-router-dom';
+import NavigationBar from '../components/NavigationBar';
 
 interface FetchTrips {
   trips: [ITrip]
@@ -29,7 +30,7 @@ const FETCH_TRIPS = gql`
   }
 `
 
-const Home: React.FC = () => {
+const Home: React.FC = (props: any) => {
 
   const {data,loading} = useQuery<FetchTrips>(FETCH_TRIPS)
 

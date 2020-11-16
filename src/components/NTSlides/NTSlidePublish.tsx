@@ -18,7 +18,7 @@ const NTSlidePublish = ({title,description,image,sections,publish} : NTSlidePubl
 
     return (
         <IonSlide>
-            <IonItemGroup>
+            <IonItemGroup style={{marginBottom: '15rem;'}}>
                 <h2>Nesten Ferdig!</h2>
                 <PreviewBox>
                     <PreviewImage style={{backgroundImage:`URL(${image?.dataUrl})`}}/>

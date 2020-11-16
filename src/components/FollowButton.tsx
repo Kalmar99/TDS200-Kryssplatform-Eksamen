@@ -35,9 +35,6 @@ const FollowButton = ({target,user_id,followers} : FollowButton) => {
             }
 
             if(followers != undefined) {
-
-                
-
                 //if the current viewing is following the account page he/she is currently on, display following instead of follow and disable the button;
                 followers.forEach( follower => {
                     if(follower.followed_by == user_id) {
@@ -64,7 +61,6 @@ const FollowButton = ({target,user_id,followers} : FollowButton) => {
                     variables: {
                         user: user_id,
                         target: target
-    
                     }
                 })
                 setIsFollowing(true)

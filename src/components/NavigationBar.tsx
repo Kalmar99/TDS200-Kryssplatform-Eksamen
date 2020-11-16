@@ -1,5 +1,5 @@
 import { IonIcon, IonLabel, IonSegment, IonSegmentButton } from "@ionic/react";
-import { compassOutline, locationOutline, personOutline } from "ionicons/icons";
+import { compassOutline, locationOutline, newspaperOutline, personOutline } from "ionicons/icons";
 import React, { useState } from "react";
 import { useAuth } from "react-nhost";
 import { useHistory } from 'react-router'
@@ -35,12 +35,28 @@ const NavigationBar = ({history} : NavigationBar) => {
                     history.replace('/login')
                 }
             break;
+            case 'feed':
+                if(auth.isAuthenticated()) {
+
+                    let id = auth.getClaim('x-hasura-user-id')
+                    history.replace({
+                        pathname: `/feed`,
+                        state: {id: id}
+                    })
+                } else {
+                    history.replace('/login')
+                }
+            break;
         }
 
     }
     
     return (
         <NavigationBarStyled value={'explore'} onIonChange={(e : any) => changeTab(e.detail.value)}>
+            <NavigationButton value='feed' >
+                <IonIcon icon={newspaperOutline} />
+                <IonLabel>Feed</IonLabel>
+            </NavigationButton>
             <NavigationButton value='explore' >
                 <IonIcon icon={compassOutline} />
                 <IonLabel>Utforsk</IonLabel>

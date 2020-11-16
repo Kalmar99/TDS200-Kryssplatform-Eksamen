@@ -222,7 +222,7 @@ const DotsRow = styled.div`
 `
 
 const Slideshow = styled(IonSlides)`
-    margin-top: 3rem;
+    margin-top: 1rem;
 `;
 
 

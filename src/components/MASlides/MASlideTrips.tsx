@@ -3,6 +3,7 @@ import React from 'react'
 import { IonContent, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonSlide, IonTitle } from "@ionic/react";
 import Trip from "../Trip";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 
 interface MASlideTrips {
@@ -20,7 +21,15 @@ const MASlideTrips = ({trips} : MASlideTrips) => {
         <IonSlide>
             <MaxHeight>
                 <IonInfiniteScrollContent>
-                    {trips != undefined && trips.map(trip => <Wrapper key={trip.id}><Trip {...trip} /></Wrapper>)}
+                    {trips != undefined && trips.map(trip => <Wrapper key={trip.id}>
+                        
+                        <Link style={{textDecoration: 'none'}} key={trip.id} to={{
+                        pathname:`/detail/${trip.id}`,
+                        state:{trip}
+                        }}>
+                            <Trip {...trip} />  
+                        </Link>
+                    </Wrapper>)}
                 </IonInfiniteScrollContent>
             </MaxHeight>
         </IonSlide>

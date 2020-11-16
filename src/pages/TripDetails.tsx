@@ -1,4 +1,4 @@
-import { IonBackButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonPage, IonSpinner, IonText } from '@ionic/react';
+import { IonBackButton, IonButtons, IonContent, IonFooter, IonHeader, IonIcon, IonItem, IonPage, IonSpinner, IonText } from '@ionic/react';
 import React, { useState } from 'react'
 import ITrip from '../models/ITrip'
 import ISection from '../models/ISection'
@@ -48,7 +48,7 @@ const TripDetails = ( props : any  ) => {
                     <BackButton defaultHref="/home" />
                 </IonButtons>
             </HeaderWithImage>
-            <IonContent>
+            <IonContent fullscreen>
                 <Content>
                     <Title>{trip.title}</Title>
                     <p>Lagt ut av: <Link to={{
@@ -64,7 +64,11 @@ const TripDetails = ( props : any  ) => {
                 </Content>
                 
                 {content}
-                
+
+                <IonFooter>
+                    <p>Hei</p>
+                </IonFooter>
+
             </IonContent>
         </IonPage>
     )

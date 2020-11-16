@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { Redirect, Route, Router, Switch,BrowserRouter, useHistory } from 'react-router-dom';
-import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonSegment, IonSegmentButton, IonTab, IonTabBar, IonTabButton, IonTabs } from '@ionic/react';
+import { IonApp, IonFooter, IonIcon, IonLabel, IonRouterOutlet, IonSegment, IonSegmentButton, IonTab, IonTabBar, IonTabButton, IonTabs } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import {compassOutline, personOutline,locationOutline} from 'ionicons/icons'
 
@@ -40,6 +40,7 @@ import { auth } from './utils/nhost';
 import MyPage from './pages/MyPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import NavigationBar from './components/NavigationBar';
+import Feed from './pages/Feed';
 
 
 /*  
@@ -47,6 +48,7 @@ import NavigationBar from './components/NavigationBar';
     https://docs.nhost.io/quick-start/client-app#add-nhostapolloprovider-to-index.js
     & refactored to same setup as shown in class. (to get rid of FindDomNode errors).
 */
+
 
 const App: React.FC = () => {
 
@@ -57,7 +59,6 @@ const App: React.FC = () => {
 
   const history = createBrowserHistory()
 
-  
   return (
     <NhostAuthProvider auth={auth}>
         <NhostApolloProvider
@@ -65,16 +66,19 @@ const App: React.FC = () => {
             gqlEndpoint={config.gqlEndpoint}>
           <IonAppStyled>
             <Router history={history}>
-              <Switch>
-                  <Route path='/home' component={Home} exact={true} />
-                  <Route path='/detail/:id' component={TripDetails} exact={true} />
-                  <Route path='/login' component={Login} exact={true} />
-                  <Route path='/register' component={Register} exact={true} />
-                  <Route path='/account/:id' component={MyPage} exact={true} /> 
-                  <ProtectedRoute path='/newtrip' component={NewTrip} exact={true} />
-                  <Route exact path='/' render={() => <Redirect to='/home' />} />
-              </Switch>
-              <NavigationBar history={history} />
+                <Switch>
+                    <Route path='/home' component={Home} exact={true} />
+                    <Route path='/detail/:id' component={TripDetails} exact={true} />
+                    <Route path='/login' component={Login} exact={true} />
+                    <Route path='/register' component={Register} exact={true} />
+                    <Route path='/account/:id' component={MyPage} exact={true} /> 
+                    <Route path='/feed' component={Feed} exact={true} />
+                    <ProtectedRoute path='/newtrip' component={NewTrip} exact={true} />
+                    <Route exact path='/' render={() => <Redirect to='/home' />} />
+                </Switch>
+                <IonFooter>
+                  <NavigationBar history={history} />
+                </IonFooter>
             </Router>
           </IonAppStyled>
         </NhostApolloProvider>
