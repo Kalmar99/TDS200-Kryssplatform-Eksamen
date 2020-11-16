@@ -14,6 +14,26 @@ import ITrip from '../models/ITrip'
 import IUser from '../models/IUser'
 import { auth } from '../utils/nhost'
 
+const FETCH_DATA = gql`
+        query getData($id: uuid) {
+            trips(where: {user_id: {_eq: $id}}) {
+              description
+              id
+              image_filename
+              title
+            }
+            users(where: {id: {_eq: $id}}) {
+              display_name
+              avatar_url
+            }
+            followers(where: {user_id: {_eq: $id}}) {
+              followed_by
+              user {
+                avatar_url
+                display_name
+              }
+            }
+          }`;
 
 interface FetchDataResponse {
     users: IUser[]
@@ -52,28 +72,11 @@ const MyPage = (props: any) => {
         }
     }
 
-    const FETCH_DATA = gql`
-        query {
-            trips(where: {user_id: {_eq: "${userId}"}}) {
-              description
-              id
-              image_filename
-              title
-            }
-            users(where: {id: {_eq: "${userId}"}}) {
-              display_name
-              avatar_url
-            }
-            followers(where: {user_id: {_eq: "${userId}"}}) {
-              followed_by
-              user {
-                avatar_url
-                display_name
-              }
-            }
-          }`;
-
-    const {data, loading} = useQuery<FetchDataResponse>(FETCH_DATA);
+    const {data, loading} = useQuery<FetchDataResponse>(FETCH_DATA,{
+        variables: {
+            id: userId
+        }
+    });
 
     
    

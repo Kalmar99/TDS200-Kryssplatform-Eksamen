@@ -18,11 +18,9 @@ interface FollowersResponse {
 
 const MASlideFollowers = ({followers} : MASlideFollowers) => {
 
-    const followersFormatted = JSON.stringify(followers?.map( follower => {return follower.followed_by}))
-
     const FETCH_FOLLOWERS = gql`
-        query {
-            users(where: {id: {_in: ${followersFormatted}}}) {
+        query fetchFollowers($followers: [uuid!]) {
+            users(where: {id: {_in: $followers}}) {
             avatar_url
             display_name
             id
@@ -30,7 +28,11 @@ const MASlideFollowers = ({followers} : MASlideFollowers) => {
         }
     `;
 
-    const {data,loading} = useQuery<FollowersResponse>(FETCH_FOLLOWERS)
+    const {data,loading} = useQuery<FollowersResponse>(FETCH_FOLLOWERS,{
+        variables: {
+            followers: followers?.map( follower => {return follower.followed_by})
+        }
+    })
 
     if(loading) {
         return <IonSlide><IonTitle>Loading...</IonTitle></IonSlide>
