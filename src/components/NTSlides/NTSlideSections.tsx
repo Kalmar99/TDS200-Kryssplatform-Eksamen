@@ -4,7 +4,8 @@ import { IonButton, IonHeader, IonModal, IonSlide, IonToolbar } from '@ionic/rea
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import ISection from '../../models/ISection'
-import { InfoDescription, TextArea, ImagePreview,Input } from './NTSlidesStyles'
+import TextArea from '../Forms/TextArea'
+import { InfoDescription, ImagePreview,Input } from './NTSlidesStyles'
 
 import SectionDisplay from './SectionDisplay'
 
@@ -92,7 +93,7 @@ const NTSlideSections = ({updateSections} : NTSlideSections) => {
                     <p>Navn</p>
                     <Input onIonInput={(e : any) => setName(e.target.value)} placeholder='Aktivitetens Navn' />
                     <p>Beskrivelse</p>
-                    <TextArea rows={3} placeholder='Fortell litt om aktiviteten' onIonInput={(e : any) => setDescription(e.target.value)}/>
+                    <TextArea onInput={setDescription} placeholder='Fortell litt om aktiviteten' />
                 </ModalGroup>
             </IonModal>
             <Group>
@@ -106,6 +107,8 @@ const NTSlideSections = ({updateSections} : NTSlideSections) => {
         </IonSlide>
     )
 }
+
+//<TextArea rows={3} placeholder='Fortell litt om aktiviteten' onIonInput={(e : any) => setDescription(e.target.value)}/>
 
 const Group = styled.div`
     margin: auto;

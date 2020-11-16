@@ -1,6 +1,7 @@
 import { gql, useQuery } from "@apollo/client"
 import { IonSpinner, IonTitle } from "@ionic/react";
 import React from "react"
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import ITrip from "../models/ITrip";
 import Trip from "./Trip";
@@ -22,6 +23,10 @@ const FETCH_TRIPS = gql`
         image_filename
         id
         description
+        user {
+            id
+            display_name
+          }
         }
     }
 `;
@@ -41,7 +46,12 @@ const FollowerPosts = ({followers} : FollowerPosts) => {
     return (
         <div>
             <Title>Nylige turer</Title>
-            {data?.trips.map((trip) => <Trip key={trip.id} {...trip} />)}
+            {data?.trips.map((trip) =>  <Link style={{textDecoration: 'none'}} key={trip.id} to={{
+                        pathname:`/detail/${trip.id}`,
+                        state:{trip}
+                        }}>
+                            <Trip key={trip.id} {...trip} />
+                        </Link>)}
         </div>
     )
 }

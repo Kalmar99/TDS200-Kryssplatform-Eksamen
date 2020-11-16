@@ -5,13 +5,17 @@ import ISection from '../models/ISection'
 import {arrowBack} from 'ionicons/icons'
 import styled from 'styled-components';
 import gql from 'graphql-tag';
-import { useQuery } from '@apollo/client';
+import { useQuery, useSubscription } from '@apollo/client';
 import Trip from '../components/Trip';
 import {config} from '../utils/nhost-config'
 import { Link } from 'react-router-dom';
+import CommentSection from '../components/Reviews';
+import IComment from '../models/IReview';
+import Reviews from '../components/Reviews';
 
 interface ISectionResponse {
-    sections: [ISection]
+    sections: ISection[];
+    reviews: IComment[]
 }
 
 const TripDetails = ( props : any  ) => {
@@ -20,7 +24,7 @@ const TripDetails = ( props : any  ) => {
     const [trip,setTrip] = useState<ITrip>(props.location?.state?.trip)
 
     const FETCH_SECTIONS = gql`
-        query fetchSection($userID : Int) {
+        query fetchSection($userID: Int) {
             sections(where: {trip_id: {_eq: $userID}}) {
                 trip_id
                 title
@@ -28,8 +32,18 @@ const TripDetails = ( props : any  ) => {
                 id
                 description
             }
+            reviews(where: {trip_id: {_eq: $userID}}) {
+                comment
+                id
+                rating
+                user {
+                    display_name
+                    avatar_url
+                }
+            }
         }
     `;
+
 
     const {data, loading} = useQuery<ISectionResponse>(FETCH_SECTIONS,{
         variables: {
@@ -66,8 +80,16 @@ const TripDetails = ( props : any  ) => {
                 <Content>
                     <h2>Severdigheter</h2>
                 </Content>
-                
                 {content}
+                <Content>
+                    <h2>Anmeldelser</h2>
+                </Content>
+                <Content>
+                    <Reviews reviews={data?.reviews} trip={trip.id} />
+                </Content>
+                <Content>
+                    <div style={{height: '5rem'}}></div>
+                </Content>
             </IonContent>
         </IonPage>
     )

@@ -47,7 +47,7 @@ interface FetchDataResponse {
 
 const MyPage = (props: any) => {
 
-    const noAvatar = './img/assets/avatar.jpg'
+    const noAvatar = './assets/img/noAvatar.png'
 
     //This is the user id that belongs to the data on this page
     const [userId,setUserId] = useState(props?.location?.state?.id)

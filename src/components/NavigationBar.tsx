@@ -14,6 +14,7 @@ const NavigationBar = ({history} : NavigationBar) => {
 
     const [tab,setTab] = useState('home')
 
+    //Set the right tab if the page reloads
     useEffect(() => {
         if(history != undefined) {
             let location = history.location.pathname.split('/')

@@ -75,7 +75,7 @@ const FollowButton = ({target,user_id,followers} : FollowButton) => {
     if(!isFollowing && !mySelf) {
         followBtn = <FollowButtonStyled style={{backgroundColor: '#3686E2'}} onClick={follow}>Følg</FollowButtonStyled>
     } else if(isFollowing && target != user_id) {
-        followBtn = <FollowButtonStyled style={{backgroundColor: 'transparent', border: '2px solid gray'}} disabled={true}>Følger</FollowButtonStyled>
+        followBtn = <FollowButtonStyled style={{backgroundColor: 'transparent', border: '2px solid gray', color: 'gray'}} disabled={true}>Følger</FollowButtonStyled>
     } else if (mySelf) {
         followBtn = "";
     }

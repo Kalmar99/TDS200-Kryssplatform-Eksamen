@@ -5,11 +5,6 @@ export const InfoDescription = styled.p`
     max-width: 19rem;
 `;
 
-export const TextArea = styled(IonTextarea)`
-    border: 2px solid gray;
-    border-radius: 4px;
-`;
-
 export const ImagePreview = styled.img`
     width: 14rem !important;
     border-radius: 5px;
