@@ -21,6 +21,10 @@ const FETCH_DATA = gql`
               id
               image_filename
               title
+              user {
+                id
+                display_name
+              }
             }
             users(where: {id: {_eq: $id}}) {
               display_name
@@ -43,9 +47,11 @@ interface FetchDataResponse {
 
 const MyPage = (props: any) => {
 
+    const noAvatar = './img/assets/avatar.jpg'
+
     //This is the user id that belongs to the data on this page
     const [userId,setUserId] = useState(props?.location?.state?.id)
-    
+
     // To ensure that the id gets updated when user f.ex: presses the my account button while watching another users page
     useEffect(() => {
         let id = props?.location?.state?.id
@@ -78,8 +84,17 @@ const MyPage = (props: any) => {
         }
     });
 
-    
-   
+    const [avatar, setAvatar] = useState(noAvatar)
+
+    // Set the avatar
+    if(!loading) {
+        if(avatar === noAvatar) {
+            if(data?.users[0].avatar_url != undefined) {
+                setAvatar(data?.users[0].avatar_url)
+            }
+        }
+    }
+ 
     /*  
     The Code for getting the swiper object is copied from here:
     https://forum.ionicframework.com/t/get-swiper-instance-from-slides-component/186503  
@@ -143,13 +158,13 @@ const MyPage = (props: any) => {
     }
 
     // I have to put the slides in an array becouse swiper will not recognize the settins slide unless its added at the same time as the others.
-    const slides = [ <MASlideTrips key='SlideTrips' trips={data?.trips} />,  <MASlideFollowers key='SlideFollowers' followers={data?.followers} />,<MASlideSettings key='SlideSettings' />]
+    const slides = [ <MASlideTrips key='SlideTrips' trips={data?.trips} />,  <MASlideFollowers key='SlideFollowers' followers={data?.followers} />,<MASlideSettings setAvatar={setAvatar} user={data?.users[0]} key='SlideSettings' />]
 
     return (
         <IonPage>
             <MyAccountHeader>
                 <div style={{marginTop: '3rem'}}>
-                    <ImageRounded url={data?.users[0].avatar_url != undefined ? data?.users[0].avatar_url : './assets/img/avatar.jpg' } x='' y='' w='8rem' h='8rem' size='100%'/>
+                    <ImageRounded url={avatar} x='' y='' w='8rem' h='8rem' size='auto 100%'/>
                     <DisplayName>{data?.users[0].display_name}</DisplayName>
                    { userSelf != undefined && <FollowButton followers={data?.followers} target={userId} user_id={userSelf}/>}
                 </div>

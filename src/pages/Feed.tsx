@@ -37,9 +37,6 @@ const Feed = (props: any) => {
         }
     })
 
-    const [followers,setFollowers] = useState<string[]>()
-    console.log('ID: ',userID)
-
     const {data,loading} = useQuery<FetchFollowersResponse>(FETCH_FOLLOWERS,{
         variables: {
             userID: userID
@@ -61,7 +58,6 @@ const Feed = (props: any) => {
         return (
             <IonPage>
                 <IonTitle>
-                    Laster inn..
                     <IonSpinner />
                 </IonTitle>
             </IonPage>

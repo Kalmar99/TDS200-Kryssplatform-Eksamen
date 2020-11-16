@@ -1,6 +1,6 @@
 import { IonIcon, IonLabel, IonSegment, IonSegmentButton } from "@ionic/react";
 import { compassOutline, locationOutline, newspaperOutline, personOutline } from "ionicons/icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "react-nhost";
 import { useHistory } from 'react-router'
 import styled from "styled-components";
@@ -12,16 +12,26 @@ interface NavigationBar {
 
 const NavigationBar = ({history} : NavigationBar) => {
 
+    const [tab,setTab] = useState('home')
+
+    useEffect(() => {
+        if(history != undefined) {
+            let location = history.location.pathname.split('/')
+            
+            setTab(location[1])
+        }
+    })
+    
     const changeTab = async (tab: string) => {
 
         switch(tab) {
-            case 'explore':
+            case 'home':
                 history.replace('/home')
             break;
             case 'newtrip':
                 history.replace('/newtrip')
             break;
-            case 'myaccount':
+            case 'account':
                 //If the user is logged in, navigate to his/her page. If not logged in redirect. 
                 //I need to put this logic here istead of using private route, since i want non users to be able to view other peoples profiles without being logged in.
                 if(auth.isAuthenticated()) {
@@ -52,12 +62,12 @@ const NavigationBar = ({history} : NavigationBar) => {
     }
     
     return (
-        <NavigationBarStyled value={'explore'} onIonChange={(e : any) => changeTab(e.detail.value)}>
+        <NavigationBarStyled value={tab} onIonChange={(e : any) => changeTab(e.detail.value)}>
             <NavigationButton value='feed' >
                 <IonIcon icon={newspaperOutline} />
                 <IonLabel>Feed</IonLabel>
             </NavigationButton>
-            <NavigationButton value='explore' >
+            <NavigationButton value='home' >
                 <IonIcon icon={compassOutline} />
                 <IonLabel>Utforsk</IonLabel>
             </NavigationButton>
@@ -65,7 +75,7 @@ const NavigationBar = ({history} : NavigationBar) => {
                 <IonIcon icon={locationOutline} />
                 <IonLabel>Ny Tur</IonLabel>
             </NavigationButton>
-            <NavigationButton value='myaccount'>
+            <NavigationButton value='account'>
                 <IonIcon icon={personOutline} />
                 <IonLabel>Min Bruker</IonLabel>
             </NavigationButton>

@@ -1,5 +1,5 @@
 import { gql, useQuery } from "@apollo/client"
-import { IonSpinner } from "@ionic/react";
+import { IonSpinner, IonTitle } from "@ionic/react";
 import React from "react"
 import styled from "styled-components";
 import ITrip from "../models/ITrip";
@@ -27,10 +27,7 @@ const FETCH_TRIPS = gql`
 `;
 
 const FollowerPosts = ({followers} : FollowerPosts) => {
-    
-    console.log('followers',followers)
-
-    
+  
     const {data,loading} = useQuery<FetchTrips>(FETCH_TRIPS,{
         variables: {
             users: followers
@@ -38,7 +35,7 @@ const FollowerPosts = ({followers} : FollowerPosts) => {
     })
 
     if(loading) {
-        return <div><IonSpinner /></div>
+        return <IonTitle><IonSpinner /></IonTitle>
     }
     
     return (

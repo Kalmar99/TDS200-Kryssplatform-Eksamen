@@ -20,7 +20,7 @@ const TripDetails = ( props : any  ) => {
     const [trip,setTrip] = useState<ITrip>(props.location?.state?.trip)
 
     const FETCH_SECTIONS = gql`
-        query fetchSection($userID : uuid) {
+        query fetchSection($userID : Int) {
             sections(where: {trip_id: {_eq: $userID}}) {
                 trip_id
                 title
@@ -33,7 +33,7 @@ const TripDetails = ( props : any  ) => {
 
     const {data, loading} = useQuery<ISectionResponse>(FETCH_SECTIONS,{
         variables: {
-            userID: trip.user?.id
+            userID: trip.id
         }
     })
 
@@ -68,11 +68,6 @@ const TripDetails = ( props : any  ) => {
                 </Content>
                 
                 {content}
-
-                <IonFooter>
-                    <p>Hei</p>
-                </IonFooter>
-
             </IonContent>
         </IonPage>
     )
