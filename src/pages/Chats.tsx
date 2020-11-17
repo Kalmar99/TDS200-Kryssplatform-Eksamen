@@ -12,7 +12,6 @@ interface MessagesResponse {
     messages: IMessage[]
 }
 
-
 const FETCH_MESSAGES = gql`
     subscription getMessages($userID: uuid) {
         messages(where: {
@@ -34,23 +33,6 @@ const FETCH_MESSAGES = gql`
         }
     }
 `;
-
-/*
-`
-    subscription getMessages($userID: uuid) {
-        messages(where: {receiver: {_eq: $userID}}) {
-            id
-            message
-            user {
-                id
-                avatar_url
-                display_name
-            }
-            sender
-            receiver
-        }
-    }
-`; */
 
 const Chats = () => {
 
@@ -81,18 +63,11 @@ const Chats = () => {
 
         if(data?.messages != undefined && data.messages.length > 0 ) {
 
-            //const oldValues = Array.from(messages!.values())
-
             //Filter the messages to get conversations
             const newMessages = filterMessages(data.messages)
 
-            //const newValues = Array.from(messages!.values())
-            
-            
-                setMessages(newMessages!)
-                console.log('messages',newMessages!)
-            
-            
+            setMessages(newMessages!)
+       
             const localMsgComponents : any = []
 
             //As far as i know i cant .map over a map so using a for each to add to array that i can map
@@ -101,14 +76,6 @@ const Chats = () => {
                 localMsgComponents.push(<LatestMessage key={key} messages={msgs} />)
 
             })
-            /*
-            setMsgComponents((prev : any) => {
-                
-                const NewData = prev.concat(localMsgComponents)
-          
-                console.log('Recieved New Messages',NewData)
-                return NewData;
-            }) */
 
         }
     }
@@ -199,14 +166,11 @@ const Chats = () => {
         return messages
     }
 
-
-
     return (
         <IonPage>
             <IonContent>
                 <IonList>
                     {Array.from(messages!).map((message,i) => <LatestMessage key={i} messages={message[1]} />)}
-                    {msgComponents?.map((msg : any) => msg)}
                 </IonList>
             </IonContent>
         </IonPage>
