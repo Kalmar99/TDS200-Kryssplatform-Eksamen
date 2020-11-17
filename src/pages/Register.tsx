@@ -51,7 +51,7 @@ const Register = () => {
     /*  The camera function and hook is copied from lecture 7 */
     const {isAvailable,getPhoto,photo} = useCamera()
 
-      /*  Code in this function is copied from lecture 7 but modified to fit my project    */
+    /*  Code in this function is copied from lecture 7 but modified to fit my project    */
     const uploadImage = async (image: string, name: string) => {
         await storage.putString(`/public/${name}.jpg`,image, 'data_url',null, (progress : ProgressEvent) => {
             console.log(progress.loaded)

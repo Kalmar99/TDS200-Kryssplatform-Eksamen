@@ -21,7 +21,6 @@ if (isPlatform('capacitor')) {
 } else {
     nhostConfig = {
         base_url: config.backendUrl,
-        use_cookies: true,
         client_storage_type: "web"
     } 
 }
