@@ -47,7 +47,7 @@ const Reviews = ({reviews,trip} : Reviews) => {
 
     useEffect(() => {
 
-        if(reviews != undefined && userAvatar == undefined && userName == undefined) {
+        if(reviews != undefined && userAvatar == undefined && userName == undefined && reviews.length > 0) {
             setUserName(reviews[0].user.display_name)
             let avatar = reviews[0].user.avatar_url != undefined ? reviews![0].user.avatar_url : './assets/img/NoAvatar.png'
             setUserAvatar(avatar)

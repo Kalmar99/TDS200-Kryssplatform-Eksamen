@@ -58,7 +58,7 @@ const TripDetails = ( props : any  ) => {
     } else {
         content = data?.sections.map((section,i) => <Trip key={i} id={i} title = {section.title} description={section.description} image_filename={section.image_name}  />)
     }
-
+    
     return (
         <IonPage>
             <HeaderWithImage style={{backgroundImage: `URL(${config.backendUrl}/storage/o/public/${trip.image_filename}.jpg)`}}>
@@ -78,7 +78,7 @@ const TripDetails = ( props : any  ) => {
                     <p>{trip.description}</p>
                 </Content>
                 <Content>
-                    <h2>Severdigheter</h2>
+                   { data != undefined && data.sections.length > 0 && <h2>Aktiviteter</h2>}
                 </Content>
                 {content}
                 <Content>

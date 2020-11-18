@@ -8,7 +8,7 @@ const User = ({id,display_name,avatar_url} : IUser) => {
     return (
         <UserWrapper>
             <IonItem lines='none'>
-                <UserAvatar style={{backgroundImage: (avatar_url != undefined ? `URL(${avatar_url})` : 'URL(./assets/img/avatar.jpg)')}} />
+                <UserAvatar style={{backgroundImage: (avatar_url != undefined ? `URL(${avatar_url})` : 'URL(./assets/img/NoAvatar.png)')}} />
                 <UserName>{display_name}</UserName>
             </IonItem>
         </UserWrapper>

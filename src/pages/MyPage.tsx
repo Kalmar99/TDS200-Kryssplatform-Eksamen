@@ -62,7 +62,16 @@ const MyPage = (props: any) => {
                swiper.allowSlideNext = true
             }
         }
-       
+
+        if(!loading) {
+            if(avatar === noAvatar || avatar !== data?.users[0].avatar_url) {
+                if(data?.users[0].avatar_url != undefined) {
+                    setAvatar(data?.users[0].avatar_url)
+                }
+            }
+        }
+
+
     })
 
     const [user,setUser] = useState<IUser>()
@@ -88,9 +97,11 @@ const MyPage = (props: any) => {
 
     // Set the avatar
     if(!loading) {
-        if(avatar === noAvatar) {
+        if(avatar !== data?.users[0].avatar_url) {
             if(data?.users[0].avatar_url != undefined) {
                 setAvatar(data?.users[0].avatar_url)
+            } else if(avatar !== noAvatar) {
+                setAvatar(noAvatar)
             }
         }
     }

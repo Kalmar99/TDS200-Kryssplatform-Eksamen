@@ -64,7 +64,7 @@ const Chats = () => {
         if(data?.messages != undefined && data.messages.length > 0 ) {
 
             //Filter the messages to get conversations
-            const newMessages = filterMessages(data.messages)
+            const newMessages = groupByConversation(data.messages)
 
             setMessages(newMessages!)
        
@@ -96,7 +96,7 @@ const Chats = () => {
     }
 
     // dear hasura, why dont you support group by.......
-    const filterMessages = (msg: IMessage[]) => {
+    const groupByConversation = (msg: IMessage[]) => {
         
         /*
             This functions takes an array of messages and filters them on sender.
