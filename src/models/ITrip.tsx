@@ -6,6 +6,7 @@ interface ITrip {
     description: string;
     image_filename: string;
     user?: IUser
+    category?: string;
 }
 
 export default ITrip

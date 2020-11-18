@@ -19,13 +19,22 @@ import NTSlidePublish from '../components/NTSlides/NTSlidePublish';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/client';
 import { auth, storage } from '../utils/nhost';
+import { useHistory } from 'react-router';
+import ITrip from '../models/ITrip';
 
 const NewTrip = () => {
 
     const INSERT_TRIP = gql`
         mutation insert_trips_one($trip: trips_insert_input!) {
             insert_trips_one(object: $trip) {
-            id
+                id
+                description
+                image_filename
+                title
+                user {
+                  display_name
+                  id
+                }
             }
         }
     `;
@@ -47,6 +56,7 @@ const NewTrip = () => {
     const [picture,setPicture] = useState<CameraPhoto>()
     const [description,setDescription] = useState<string>()
     const [sections,setSections] = useState<ISection[]>([])
+    const [category,setCategory] = useState<String>()
 
     let dots = []
 
@@ -83,6 +93,8 @@ const NewTrip = () => {
  
     }
 
+    const history = useHistory()
+
     const prepareSections = async (id : number) => {
         
         /*  This way of implementing async map is based on code from this guide:
@@ -115,25 +127,33 @@ const NewTrip = () => {
             await uploadImage((picture?.dataUrl as string),image_name)
 
             // insert the new trip and get the id
-            let id = await insertTripMutation({
+            let trip = await insertTripMutation({
                 variables: {
                     trip: {
                         title: title,
                         description: description,
                         image_filename: image_name,
-                        user_id: auth.getClaim('x-hasura-user-id')
+                        user_id: auth.getClaim('x-hasura-user-id'),
+                        category: category
                     }
                 }
             })
 
             //Put the id on all the sections
-            let preppedSections = await prepareSections(id.data.insert_trips_one.id)
+            let preppedSections = await prepareSections(trip.data.insert_trips_one.id)
 
             await insertSectionsMutation({
                 variables: {
                     sections: preppedSections
                 }
                     
+            })
+
+            const created =  trip.data.insert_trips_one as ITrip
+
+            history.replace({
+               pathname: `/detail/${trip.data.insert_trips_one.id}`,
+               state: {trip: created}
             })
             
 
@@ -204,7 +224,7 @@ const NewTrip = () => {
                     onIonSlideTouchStart={canChange}
                     >
                     <NTSlideInfo />
-                    <NTSlideTitle setTitle={setTitle} hasInput={hasInput}/>
+                    <NTSlideTitle setTitle={setTitle} hasInput={hasInput} setCategory={setCategory}/>
                     <NTSlidePicture setPicture={setPicture} hasInput={hasInput} />
                     <NTSlideDescription setDescription={setDescription} hasInput={hasInput}/>
                     <NTSlideSections updateSections={setSections}/>

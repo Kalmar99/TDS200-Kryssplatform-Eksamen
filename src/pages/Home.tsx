@@ -1,4 +1,4 @@
-import { IonCard, IonCardContent, IonContent, IonFooter, IonHeader, IonIcon, IonImg, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonItemGroup, IonPage, IonSlide, IonSlides, IonSpinner, IonTitle, IonToolbar, IonVirtualScroll } from '@ionic/react';
+import { IonCard, IonCardContent, IonContent, IonFooter, IonHeader, IonIcon, IonImg, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonItemGroup, IonList, IonPage, IonSlide, IonSlides, IonSpinner, IonTitle, IonToolbar, IonVirtualScroll } from '@ionic/react';
 import React, { useState } from 'react';
 import {image, paperPlaneOutline, search} from 'ionicons/icons'
 import {auth} from '../utils/nhost'
@@ -10,6 +10,7 @@ import { useQuery } from '@apollo/client';
 import ITrip from '../models/ITrip'
 import { Link } from 'react-router-dom';
 import NavigationBar from '../components/NavigationBar';
+import ECategory, { CategoryColors, CategoryImages, CategoryIndex } from '../models/ECategory';
 
 interface FetchTrips {
   trips: [ITrip]
@@ -26,6 +27,7 @@ const FETCH_TRIPS = gql`
         id
         display_name
       }
+      category
     }
   }
 `
@@ -33,6 +35,8 @@ const FETCH_TRIPS = gql`
 const Home: React.FC = (props: any) => {
 
   const {data,loading} = useQuery<FetchTrips>(FETCH_TRIPS)
+
+  const categories = Object.values(ECategory)
 
   const logOut = () => {
     auth.logout();
@@ -57,54 +61,43 @@ const Home: React.FC = (props: any) => {
               <h2>Utforsk</h2>
               
               <Link slot='end' style={{textDecoration: 'none'}} to='/chats'>
-                <IonIcon icon={paperPlaneOutline} />
+                <Icon icon={paperPlaneOutline} />
               </Link>
+              <Link slot='end' style={{textDecoration: 'none'}} to={{
+                pathname:'/search',
+                state: {
+                  trips: data?.trips
+                }
+              }}>
+                <Icon icon={search} />
+              </Link>
+
           </IonItem>
           <IonSlides options={{slidesPerView: 2.5}}>
-            <IonSlide>
+
+            {categories.map((category) => <IonSlide key={category}>
+              <CategoryLink style={{textDecoration: 'none'}} to={{
+                pathname: '/search',
+                state: {
+                  category: category,
+                  trips: data?.trips
+                }
+              }} >
                 <Category style={{
-                  background: 'URL("./assets/img/cabin.jpg")',
-                  backgroundPosition: 'center'
-                }}>
-                    <CategoryLabel>Hytter</CategoryLabel>
-                </Category>
-            </IonSlide>
-            <IonSlide>
-            <Category style={{
-                  background: 'URL("./assets/img/mountain.jpg")',
-                  backgroundOrigin: 'content-box',
-                  backgroundSize: 'auto 100%',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPositionX: '-50px'
-                }}>
-                    <CategoryLabel style={{
-                      backgroundColor: '#885A5A'
-                    }}>
-                      Fjelltur
-                    </CategoryLabel>
-                </Category>
-            </IonSlide>
-            <IonSlide>
-              <Category style={{
-                  background: 'URL("./assets/img/fishing.jpg")',
-                  backgroundOrigin: 'content-box',
-                  backgroundSize: 'auto 100%',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPositionX: '-50px'
-                }}>
-                  <CategoryLabel style={{
-                      backgroundColor: '#16697A'
-                    }}>
-                      Fisketur
-                  </CategoryLabel>
-              </Category>
-            </IonSlide>
+                    background: `URL(${CategoryImages[CategoryIndex[category]]})`,
+                    backgroundPosition: 'center',
+                    backgroundSize: 'auto 100%'
+                  }}>
+                      <CategoryLabel style={{backgroundColor: CategoryColors[CategoryIndex[category]]}}>{category}</CategoryLabel>
+                  </Category>
+                </CategoryLink>
+            </IonSlide>)}
+
           </IonSlides>
           <IonItem lines='none'>
               <Headline>Nye Turer</Headline>
           </IonItem>
-          <IonInfiniteScroll>
-            <IonInfiniteScrollContent>
+          <TripsList>
                     {/*  this method of passing state through link is copied from lecture 3  */}
                     {data?.trips.map( (trip) => 
                     <Link style={{textDecoration: 'none'}} key={trip.id} to={{
@@ -113,13 +106,35 @@ const Home: React.FC = (props: any) => {
                     }}>
                       <Trip {...trip} />
                     </Link>)}
-            </IonInfiniteScrollContent>
-          </IonInfiniteScroll>
+          </TripsList>
       </IonContent>
     </IonPage>
   );
 };
 
+// The styles in category link is the same styles that is being used by IonSlide, 
+// need to copy that here so link does not overide its styling
+const CategoryLink = styled(Link)`
+
+    display: -ms-flexbox;
+    display: flex;
+    position: relative;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+
+`;
+
+const TripsList = styled(IonList)`
+  margin-bottom: 5rem;
+`;
 
 const Headline = styled.h2`
   margin-top: 0.4rem;
@@ -130,9 +145,10 @@ const UserAvatar = styled.img`
   border-radius: 4px;
 `;
 
-const SearchIcon = styled(IonIcon)`
-    font-size: 2rem;
-    margin-left: 0.5rem;
+const Icon = styled(IonIcon)`
+    font-size: 24px;
+    margin-top: 1rem;
+    color: black;
 `;
 
 const Category = styled.div`

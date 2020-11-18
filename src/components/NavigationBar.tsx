@@ -18,7 +18,20 @@ const NavigationBar = ({history} : NavigationBar) => {
     useEffect(() => {
         if(history != undefined) {
             let location = history.location.pathname.split('/')
-            
+
+            history.listen((location : any,action : any) => {
+                let loc = location.pathname.split('/')
+
+                switch(loc[1]) {
+                    case 'chats':
+                        setTab('')
+                    break;
+                    case 'search':
+                        setTab('')
+                    break;
+                }
+            })
+          
             setTab(location[1])
         }
     })

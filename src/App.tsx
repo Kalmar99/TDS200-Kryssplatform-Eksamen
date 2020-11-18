@@ -42,6 +42,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import NavigationBar from './components/NavigationBar';
 import Feed from './pages/Feed';
 import Chats from './pages/Chats';
+import Search from './pages/Search';
 
 
 /*  
@@ -73,8 +74,9 @@ const App: React.FC = () => {
                     <Route path='/login' component={Login} exact={true} />
                     <Route path='/register' component={Register} exact={true} />
                     <Route path='/account/:id' component={MyPage} exact={true} /> 
-                    <Route path='/feed' component={Feed} exact={true} />
-                    <Route path='/chats' component={Chats} exact={true} />
+                    <Route path='/search' component={Search} exact={true} />
+                    <ProtectedRoute path='/feed' component={Feed} exact={true} />
+                    <ProtectedRoute path='/chats' component={Chats} exact={true} />
                     <ProtectedRoute path='/newtrip' component={NewTrip} exact={true} />
                     <Route exact path='/' render={() => <Redirect to='/home' />} />
                 </Switch>
