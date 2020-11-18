@@ -3,7 +3,7 @@ import { IonBackButton, IonButtons, IonContent, IonHeader, IonItem, IonItemGroup
 import gql from "graphql-tag";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Chat from "./Chat";
+import Chat from "./Chat/Chat";
 import IMessage from "../models/IMessage";
 import IUser from "../models/IUser";
 import { auth } from "../utils/nhost";
@@ -67,12 +67,17 @@ const LatestMessage = ({messages} : LatestMessage) => {
         avatar = `URL(${data?.users[0].avatar_url})`
     }
 
+    let name = "cant find name"
+    if(data?.users[0].display_name != undefined) {
+        name = data.users[0].display_name
+    }
+
     return (
         <Msg>
-            <Chat display={openChat} messages={messages} other={{id:data?.users[0].id,display_name: senderName, avatar_url: avatar} as IUser} />
+            <Chat display={openChat} messages={messages} other={{id:data?.users[0].id,display_name: name, avatar_url: avatar} as IUser} />
             <UserImage style={{backgroundImage: avatar}} />
             <MsgInfo onClick={() => setOpenChat(true)}>
-                <UserName>{senderName}</UserName>
+                <UserName>{name}</UserName>
                 <LastMsg>{message}</LastMsg>
             </MsgInfo>
            

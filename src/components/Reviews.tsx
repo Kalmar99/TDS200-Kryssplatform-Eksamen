@@ -30,8 +30,6 @@ const ADD_REVIEW = gql`
 
 const Reviews = ({reviews,trip} : Reviews) => {
 
-    console.log(reviews)
-
     const [userAvatar,setUserAvatar] = useState<string>();
     const [userName,setUserName] = useState<string>()
 

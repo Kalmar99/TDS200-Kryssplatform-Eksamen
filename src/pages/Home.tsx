@@ -1,6 +1,6 @@
 import { IonCard, IonCardContent, IonContent, IonFooter, IonHeader, IonIcon, IonImg, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonItemGroup, IonPage, IonSlide, IonSlides, IonSpinner, IonTitle, IonToolbar, IonVirtualScroll } from '@ionic/react';
 import React, { useState } from 'react';
-import {image, search} from 'ionicons/icons'
+import {image, paperPlaneOutline, search} from 'ionicons/icons'
 import {auth} from '../utils/nhost'
 import styled from 'styled-components'
 import Trip from '../components/Trip';
@@ -55,6 +55,10 @@ const Home: React.FC = (props: any) => {
       <IonContent fullscreen>
           <IonItem lines={'none'}>
               <h2>Utforsk</h2>
+              
+              <Link slot='end' style={{textDecoration: 'none'}} to='/chats'>
+                <IonIcon icon={paperPlaneOutline} />
+              </Link>
           </IonItem>
           <IonSlides options={{slidesPerView: 2.5}}>
             <IonSlide>

@@ -3,10 +3,10 @@ import { IonModal, IonHeader, IonToolbar, IonButtons, IonBackButton, IonLabel, I
 import gql from "graphql-tag";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import IMessage from "../models/IMessage";
-import IUser from "../models/IUser";
-import { auth } from "../utils/nhost";
-import TextArea from "./Forms/TextArea";
+import IMessage from "../../models/IMessage";
+import IUser from "../../models/IUser";
+import { auth } from "../../utils/nhost";
+import TextArea from "../Forms/TextArea";
 import Message from "./Message";
 
 const SEND_MESSAGE = gql`

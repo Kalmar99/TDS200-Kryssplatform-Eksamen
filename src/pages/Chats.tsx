@@ -1,9 +1,11 @@
 import { OnSubscriptionDataOptions, useQuery, useSubscription } from "@apollo/client";
-import { IonContent, IonList, IonPage } from "@ionic/react"
+import { IonContent, IonHeader, IonIcon, IonInput, IonLabel, IonList, IonModal, IonPage, IonSearchbar, IonSpinner, IonToolbar } from "@ionic/react"
 import gql from "graphql-tag"
-import { push } from "ionicons/icons";
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
+import { useHistory } from "react-router";
+import styled from "styled-components";
 import LatestMessage from "../components/LatestMessage";
+import SearchChat from "../components/Chat/SearchChat";
 import IMessage from "../models/IMessage";
 import IUser from "../models/IUser";
 import { auth } from "../utils/nhost";
@@ -37,6 +39,7 @@ const FETCH_MESSAGES = gql`
 const Chats = () => {
 
     const [messages,setMessages] = useState<Map<string,IMessage[]>>(new Map())
+    const [resub, setResub] = useState(false)
 
     // To keep track of sender's user,objects
     const [senders,setSenders] = useState<Map<string,IUser>>()
@@ -55,12 +58,12 @@ const Chats = () => {
             }
         }
 
-    } )
+    },[auth.isAuthenticated()])
 
 
     //Callback function for the subscription, This function filteres the data and creates the UI components
     const updateMessages = (data? : MessagesResponse) => {
-
+        console.log(id)
         if(data?.messages != undefined && data.messages.length > 0 ) {
 
             //Filter the messages to get conversations
@@ -82,14 +85,34 @@ const Chats = () => {
 
     //Execute the subscription and register callback
     const {data,loading,error} = useSubscription<MessagesResponse>(FETCH_MESSAGES,{
-        subscription: FETCH_MESSAGES,
         variables: {
             userID: id
         },
-        shouldResubscribe: true,
+        shouldResubscribe: resub,
         onSubscriptionData: (options: OnSubscriptionDataOptions<MessagesResponse>) => updateMessages(options.subscriptionData.data)
         
     })
+
+    const history = useHistory()
+
+    //When page is refreshed. i loose the id, need to try to restart the subscription after 1 second.
+    useEffect( () => {
+        
+        if(data == undefined && resub == false) {
+            console.log('resubb',id)
+            setTimeout(() => {
+                if(auth.isAuthenticated()) {
+                    setId(auth.getClaim('x-hasura-user-id'))
+                }
+            },1000)
+
+            setResub(true)
+        } else if (data == undefined && id == undefined && resub) {
+            //Error, cant establish a websocket connection (subscription). most likely becouse user is not logged in, so we send them to login page
+            history.replace('/login')
+        }
+  
+    },[data,id])
 
     if(error) {
         console.log(error)
@@ -166,15 +189,40 @@ const Chats = () => {
         return messages
     }
 
+    const [searchActive,setSearchActive] = useState(false)
+
     return (
         <IonPage>
+            <SearchChat searchActive={searchActive} messages={messages} setSearchActive={setSearchActive} id={id} />
+            <IonHeader>
+                <ChatTitle>Meldinger</ChatTitle>
+                <ChatSubtitle>Send en melding til de du følger</ChatSubtitle>
+                <IonSearchbar placeholder='Søk' onClick={() => {setSearchActive(true);}} />
+            </IonHeader>
             <IonContent>
                 <IonList>
+                    {data === undefined && <Loading />}
                     {Array.from(messages!).map((message,i) => <LatestMessage key={i} messages={message[1]} />)}
                 </IonList>
             </IonContent>
         </IonPage>
     )
 }
+
+const Loading = styled(IonSpinner)`
+    display: block;
+    margin: auto;
+    margin-top: 2rem;
+`;
+
+const ChatSubtitle = styled.p`
+    margin: 0px 0px 0px 1rem;
+`;
+
+const ChatTitle = styled.h2`
+    margin-left: 1rem;
+
+`;
+
 
 export default Chats

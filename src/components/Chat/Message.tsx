@@ -1,8 +1,8 @@
 import { IonItem } from "@ionic/react"
 import React, { useEffect, useState } from "react"
 import styled from "styled-components";
-import IMessage from "../models/IMessage";
-import { auth } from "../utils/nhost";
+import IMessage from "../../models/IMessage";
+import { auth } from "../../utils/nhost";
 
 interface Message {
     content: IMessage;

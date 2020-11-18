@@ -14,6 +14,7 @@ import ITrip from '../models/ITrip'
 import IUser from '../models/IUser'
 import { auth } from '../utils/nhost'
 
+
 const FETCH_DATA = gql`
         query getData($id: uuid) {
             trips(where: {user_id: {_eq: $id}}) {
