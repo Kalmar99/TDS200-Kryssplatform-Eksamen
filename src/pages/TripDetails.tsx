@@ -1,4 +1,4 @@
-import { IonBackButton, IonButtons, IonContent, IonFooter, IonHeader, IonIcon, IonItem, IonPage, IonSpinner, IonText } from '@ionic/react';
+import { IonBackButton, IonButtons, IonContent, IonFooter, IonHeader, IonIcon, IonItem, IonModal, IonPage, IonSpinner, IonText } from '@ionic/react';
 import React, { useState } from 'react'
 import ITrip from '../models/ITrip'
 import ISection from '../models/ISection'
@@ -12,6 +12,9 @@ import { Link } from 'react-router-dom';
 import CommentSection from '../components/Reviews';
 import IComment from '../models/IReview';
 import Reviews from '../components/Reviews';
+import { Point } from '../components/Maps/Map';
+import MapStyle from '../components/Maps/MapStyle';
+import Map from '../components/Maps/Map'
 
 interface ISectionResponse {
     sections: ISection[];
@@ -44,7 +47,6 @@ const TripDetails = ( props : any  ) => {
         }
     `;
 
-
     const {data, loading} = useQuery<ISectionResponse>(FETCH_SECTIONS,{
         variables: {
             userID: trip.id
@@ -58,9 +60,58 @@ const TripDetails = ( props : any  ) => {
     } else {
         content = data?.sections.map((section,i) => <Trip key={i} id={i} title = {section.title} description={section.description} image_filename={section.image_name}  />)
     }
+
+    const [route,setRoute] = useState<Point[]>([{lat: 58.8693, lng: 9.41494}])
+    const [mapDetail,setMapDetail] = useState(false)
+
+    const addToRoute = (point: Point) => {
+        setRoute(oldRoute => [...oldRoute, point])
+      }
+    
+      const removeFromRoute = (index : number) => {
+        setRoute(oldRoute => {
+          oldRoute.splice(index,1)
+          return oldRoute
+        })
+      }
+
+    console.log(trip)
+    let routes : Point[] = []
+    if(trip.cords != undefined) {
+
+        console.log(JSON.parse(trip.cords))
+        let array = JSON.parse(trip.cords)
+        routes = array;
+
+    }
+    
+
+    const MapOptions = {
+        container: {
+            width: '20rem',
+            height: '20rem'
+        },
+        startCenter: routes[0],
+        route: routes,
+        options: {
+            styles: MapStyle,
+            disableDefaultUI: true,
+            zoomControl: true
+        },
+        updateRoute: () => 0,
+        allowEdit: false
+    }
     
     return (
         <IonPage>
+            <IonModal isOpen={mapDetail}>
+                <IonHeader>
+                    <p onClick={() => setMapDetail(false)}>Lukk</p>
+                </IonHeader>
+                <IonContent>
+                    <Map {...MapOptions}  container={{width: '100%', height: '90vh'}} />
+                </IonContent>
+            </IonModal>
             <HeaderWithImage style={{backgroundImage: `URL(${config.backendUrl}/storage/o/public/${trip.image_filename}.jpg)`}}>
                 <IonButtons>
                     <BackButton defaultHref="/home" />
@@ -81,6 +132,12 @@ const TripDetails = ( props : any  ) => {
                    { data != undefined && data.sections.length > 0 && <h2>Aktiviteter</h2>}
                 </Content>
                 {content}
+                <Content>
+                    {  routes.length > 0 && <h2>Turens lokasjon</h2>}
+                </Content>
+                { routes.length > 0 && <Content onClick={() => setMapDetail(true)}>
+                    <Map {...MapOptions}  />
+                </Content>}
                 <Content>
                     <h2>Anmeldelser</h2>
                 </Content>

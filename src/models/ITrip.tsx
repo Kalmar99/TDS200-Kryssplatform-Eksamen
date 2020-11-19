@@ -7,6 +7,7 @@ interface ITrip {
     image_filename: string;
     user?: IUser
     category?: string;
+    cords?: string
 }
 
 export default ITrip

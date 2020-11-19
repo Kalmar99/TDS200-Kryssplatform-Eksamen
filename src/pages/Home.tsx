@@ -28,6 +28,7 @@ const FETCH_TRIPS = gql`
         display_name
       }
       category
+      cords
     }
   }
 `

@@ -21,6 +21,8 @@ import { useMutation } from '@apollo/client';
 import { auth, storage } from '../utils/nhost';
 import { useHistory } from 'react-router';
 import ITrip from '../models/ITrip';
+import NTSLideLocation from '../components/NTSlides/NTSlideLocation';
+import { Point } from '../components/Maps/Map';
 
 const NewTrip = () => {
 
@@ -57,6 +59,12 @@ const NewTrip = () => {
     const [description,setDescription] = useState<string>()
     const [sections,setSections] = useState<ISection[]>([])
     const [category,setCategory] = useState<String>()
+    const [swiper,setSwiper] = useState<any>({});
+    const [hasInput,setHasInput] = useState(true)
+
+    const [route,setRoute] = useState<Point[]>([])
+    const [canMoveFromMap,setCanMoveFromMap] = useState(false)
+    const history = useHistory()
 
     let dots = []
 
@@ -92,8 +100,6 @@ const NewTrip = () => {
         }
  
     }
-
-    const history = useHistory()
 
     const prepareSections = async (id : number) => {
         
@@ -134,7 +140,8 @@ const NewTrip = () => {
                         description: description,
                         image_filename: image_name,
                         user_id: auth.getClaim('x-hasura-user-id'),
-                        category: category
+                        category: category,
+                        cords: JSON.stringify(route)
                     }
                 }
             })
@@ -169,15 +176,12 @@ const NewTrip = () => {
         })
     }
 
-    const [locked,setLocked] = useState<boolean>(true)
 
     /*  
     The Code for getting the swiper object is copied from here:
     https://forum.ionicframework.com/t/get-swiper-instance-from-slides-component/186503  
     copied function: initSwiper()
     */
-    const [swiper,setSwiper] = useState<any>({});
-    const [hasInput,setHasInput] = useState(true)
 
 
     const initSwiper = async function(this: any) {
@@ -185,7 +189,6 @@ const NewTrip = () => {
 
         setSwiper(swiper);
 
-        
     }
 
     //Checking if user has provided input. if not lock the slideshow
@@ -203,10 +206,25 @@ const NewTrip = () => {
                 swiper.allowSlideNext = (description != undefined)
                 setHasInput(description != undefined)
             break;
+            case 6:
+                swiper.allowSlidePrev = false
+                swiper.allowSlideNext = false
+                if(canMoveFromMap) {
+                    swiper.allowSlidePrev = true
+                    swiper.allowSlideNext = true
+                }
+                setHasInput(true)
+            break;
+            case 7:
+                console.log(route)
+                swiper.allowSlideNext = true
+                setHasInput(true)
+            break;
             default:
                 swiper.allowSlideNext = true;
                 setHasInput(true)
             break;
+            
         }
     }
     
@@ -228,6 +246,7 @@ const NewTrip = () => {
                     <NTSlidePicture setPicture={setPicture} hasInput={hasInput} />
                     <NTSlideDescription setDescription={setDescription} hasInput={hasInput}/>
                     <NTSlideSections updateSections={setSections}/>
+                    <NTSLideLocation setRoute={setRoute} route={route} setCanMoveFromMap={setCanMoveFromMap}  />
                     <NTSlidePublish publish={publish} title={title} image={picture} description={description}  sections={sections} />
                 </Slideshow>
             </IonContent>

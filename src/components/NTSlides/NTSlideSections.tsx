@@ -1,7 +1,7 @@
 import { useCamera } from '@capacitor-community/react-hooks/camera'
 import { CameraPhoto, CameraResultType } from '@capacitor/core'
 import { IonButton, IonHeader, IonModal, IonSlide, IonToolbar } from '@ionic/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import ISection from '../../models/ISection'
 import TextArea from '../Forms/TextArea'
@@ -23,6 +23,12 @@ const NTSlideSections = ({updateSections} : NTSlideSections) => {
     const [name, setName] = useState<string>("")
     const [description,setDescription] = useState<string>("")
     const [image,setImage] = useState<CameraPhoto>()
+
+    useEffect(() => {
+
+        updateSections(sections)
+
+    }, sections )
     
 
     const triggerCamera = async () => {
@@ -60,12 +66,7 @@ const NTSlideSections = ({updateSections} : NTSlideSections) => {
             id: sections?.length,
         } as ISection
 
-        /*  
-            SetSections is async, to make sure i get the current updated state in the parent component i put updateSections
-            inside setSections.
-        */
         setSections(oldSections => {
-            updateSections([...oldSections,section])
             return [...oldSections,section]
         })
        
