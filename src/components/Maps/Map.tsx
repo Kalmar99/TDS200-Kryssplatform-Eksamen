@@ -45,17 +45,23 @@ export interface Map {
     allowEdit: boolean
     options: MapOptions;
     updateRoute: (points : Point[] | undefined) => void
+    zoom: number
 }
 
-const Map = ({container,startCenter,allowEdit,options,updateRoute,route} : Map) => {
+const Map = ({container,startCenter,allowEdit,options,updateRoute,route,zoom} : Map) => {
 
     const [center,setCenter] = useState(startCenter)
 
     const [routes,setRoutes] = useState<Point[]>(route)
 
+    // Need to update location when coordinates are received from capacitor
+    useEffect(() => {
+        setCenter(startCenter)
+    },[startCenter])
+
     useEffect(() => {
         updateRoute(routes)
-    },[routes.length])
+    },[routes])
 
     const {isLoaded,loadError} = useLoadScript({
         googleMapsApiKey: config.googleMaps,
@@ -124,7 +130,7 @@ const Map = ({container,startCenter,allowEdit,options,updateRoute,route} : Map) 
         <div>
             <GoogleMap
                 mapContainerStyle={container} 
-                zoom={14} 
+                zoom={zoom} 
                 options={options}
                 center={center}
                 onClick={event => onClickMap(event)}>

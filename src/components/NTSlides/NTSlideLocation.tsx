@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react"
 import { Point } from "../Maps/Map"
 import MapStyle from "../Maps/MapStyle"
 import Map from '../Maps/Map'
+import { Geolocation} from '@capacitor/core';
 
 interface NTSLideLocation {
     setRoute: (n : any) => void,
@@ -11,6 +12,24 @@ interface NTSLideLocation {
 }
 
 const NTSLideLocation = ({setRoute,route,setCanMoveFromMap} : NTSLideLocation) => {
+
+    const [location,setLocation] = useState({lat: 0, lng: 0})
+
+    const fetchLocation = async () => {
+        const deviceLocation = await Geolocation.getCurrentPosition()
+        
+        setLocation({
+            lat: deviceLocation.coords.latitude,
+            lng: deviceLocation.coords.longitude
+        })
+
+    }
+
+    useEffect(() => {
+        if(location.lat === 0 && location.lng === 0) {
+            fetchLocation()
+        }
+    })
 
     const updateRoute = (newValue: (Point[] | undefined)) => {
         if(newValue === undefined) {
@@ -40,9 +59,10 @@ const NTSLideLocation = ({setRoute,route,setCanMoveFromMap} : NTSLideLocation) =
                             disableDefaultUI: true,
                             zoomControl: true
                         }}
-                        startCenter={{lat: 58.8693, lng: 9.41494}}
+                        startCenter={location}
                         updateRoute={updateRoute}
                         allowEdit = {true}
+                        zoom={16}
                         />
                 </div>
                

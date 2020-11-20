@@ -53,15 +53,9 @@ const Reviews = ({reviews,trip} : Reviews) => {
     })
 
 
-    if(reviews == undefined) {
-        return <IonSpinner />
-    } else if (reviews.length == 0) {
-        return <p>Ingen har skrevet en anmeldse enda</p>
-    }
 
     const starClick = (index: number) => {
         setStars(index)
-        console.log('index: ',index)
         renderStars(index)
     }
 
@@ -109,12 +103,21 @@ const Reviews = ({reviews,trip} : Reviews) => {
 
     }
 
+    if(reviews == undefined) {
+        return <IonSpinner />
+    } else if (reviews.length == 0 && writeNew == false) {
+        return (<div>
+            <p>Ingen har skrevet en anmeldse enda</p>
+            <WriteNewButton onClick={() => {setWriteNew(true); console.log(writeNew)}}><IonIcon icon={pencilOutline} /> Skriv en anmeldelse</WriteNewButton>
+        </div>)
+    }
+
     return(
         <div>
             <IonModal isOpen={showAll}>
                 <IonHeader>
                     <ReviewToolBar>
-                        { auth.isAuthenticated() && <CloseLabel slot='start' onClick={() => setShowAll(false)}>Skriv Ny</CloseLabel>}
+                        { auth.isAuthenticated() && <CloseLabel slot='start' onClick={() => {setShowAll(false); setWriteNew(true)}}>Skriv Ny</CloseLabel>}
                         <IonLabel>Alle Anmeldelser</IonLabel>
                         <CloseLabel slot='end' onClick={() => setShowAll(false)}>Lukk</CloseLabel>
                     </ReviewToolBar>
@@ -141,10 +144,23 @@ const Reviews = ({reviews,trip} : Reviews) => {
                     </ReviewInputGroup>
                 </IonContent>
             </IonModal>
-            <Review review={reviews[reviews.length-1]} displayButtons={true} openAll={() => setShowAll(true)} writeReview={() => setWriteNew(true)} />
+           {    reviews.length > 0 &&  <Review review={reviews[reviews.length-1]} displayButtons={true} openAll={() => setShowAll(true)} writeReview={() => setWriteNew(true)} />}
         </div>
     )
 }
+
+const WriteNewButton = styled(IonButton)`
+    margin: 0;
+    padding: 0;
+    min-height: 3rem;
+    font-size: 4vw;
+
+    ::part(native) {
+        background:  #F1ECEC;
+        color: #2D2D2D;
+        border-radius: 4px;
+    }
+`;
 
 const StarStyled = styled(IonIcon)`
     margin-right: 0.2rem;

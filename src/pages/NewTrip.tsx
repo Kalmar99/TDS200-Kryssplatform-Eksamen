@@ -37,6 +37,7 @@ const NewTrip = () => {
                   display_name
                   id
                 }
+                cords
             }
         }
     `;
@@ -157,11 +158,12 @@ const NewTrip = () => {
             })
 
             const created =  trip.data.insert_trips_one as ITrip
-
+            console.log(created)
+           
             history.replace({
                pathname: `/detail/${trip.data.insert_trips_one.id}`,
                state: {trip: created}
-            })
+            }) 
             
 
         } catch (error) {

@@ -49,7 +49,6 @@ const Message = ({content,senderAvatar} : Message) => {
         }
     })
 
-
     return (
         <IonItem lines='none'>
             <IonItem slot={side} lines='none'>

@@ -75,7 +75,6 @@ const TripDetails = ( props : any  ) => {
         })
       }
 
-    console.log(trip)
     let routes : Point[] = []
     if(trip.cords != undefined) {
 
@@ -99,7 +98,8 @@ const TripDetails = ( props : any  ) => {
             zoomControl: true
         },
         updateRoute: () => 0,
-        allowEdit: false
+        allowEdit: false,
+        zoom: 16
     }
     
     return (

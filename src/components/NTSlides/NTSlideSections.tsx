@@ -25,11 +25,8 @@ const NTSlideSections = ({updateSections} : NTSlideSections) => {
     const [image,setImage] = useState<CameraPhoto>()
 
     useEffect(() => {
-
         updateSections(sections)
-
-    }, sections )
-    
+    },[sections.length])
 
     const triggerCamera = async () => {
         await getPhoto({
@@ -69,13 +66,16 @@ const NTSlideSections = ({updateSections} : NTSlideSections) => {
         setSections(oldSections => {
             return [...oldSections,section]
         })
+        updateSections(sections)
        
         resetModal()
         
     }
 
     const removeSection = (id: number) => {
-        setSections((current) => current.filter( section => section.id != id))
+        setSections((current) => {
+            return current.filter( section => section.id != id)
+        })
     }
 
     return (
