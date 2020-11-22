@@ -42,7 +42,7 @@ const FollowButton = ({target,user_id,followers} : FollowButton) => {
                 //if the current viewing is following the account page he/she is currently on, display following instead of follow and disable the button;
                 followers.forEach( follower => {
                     if(follower.followed_by == user_id) {
-                        console.log(follower)
+                        
                         setIsFollowing(true)
                     }
                 })
@@ -61,7 +61,6 @@ const FollowButton = ({target,user_id,followers} : FollowButton) => {
     const follow = async () => {
         if(!isFollowing) {
             try {
-                console.log(`user: ${user_id} tried to follow user: ${target}`)
                 await insertFollowMutation({
                     variables: {
                         user: user_id,
@@ -73,16 +72,6 @@ const FollowButton = ({target,user_id,followers} : FollowButton) => {
                 console.log(error)
             }
         }
-    }
-
-    let followBtn;
-
-    if(!isFollowing && !mySelf) {
-        followBtn = <FollowButtonStyled style={{backgroundColor: '#3686E2'}} onClick={follow}>Følg</FollowButtonStyled>
-    } else if(isFollowing && target != user_id) {
-        followBtn = <FollowButtonStyled style={{backgroundColor: 'transparent', border: '2px solid gray', color: 'gray'}} disabled={true}>Følger</FollowButtonStyled>
-    } else if (mySelf) {
-        followBtn = "";
     }
 
     return (
