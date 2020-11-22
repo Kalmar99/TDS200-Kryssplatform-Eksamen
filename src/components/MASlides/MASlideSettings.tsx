@@ -5,6 +5,7 @@ import { IonButton, IonContent, IonHeader, IonIcon, IonItem, IonItemGroup, IonLa
 import gql from 'graphql-tag';
 import { cameraOutline, logOutOutline, settingsOutline } from 'ionicons/icons';
 import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import IUser from '../../models/IUser';
 import { auth, storage } from '../../utils/nhost';
@@ -31,6 +32,8 @@ const MASlideSettings = ({user,setAvatar} : MASlideSettings) => {
 
     const [updateAvatar] = useMutation(UPDATE_AVATAR)
     const [displayImage,setDisplayImage] = useState<string>('')
+
+    const  history  = useHistory()
 
     useEffect(() => {
         if(photo != undefined) {
@@ -74,6 +77,11 @@ const MASlideSettings = ({user,setAvatar} : MASlideSettings) => {
         }
     }
 
+    const logout = () => {
+        auth.logout()
+        history.replace('/login')
+    }
+
     return (
         <IonSlide>
             <IonModal isOpen={changePicture}>
@@ -105,7 +113,7 @@ const MASlideSettings = ({user,setAvatar} : MASlideSettings) => {
                         <IonIcon icon={cameraOutline} />
                         <SettingsLabel>Bytt Profil bilde</SettingsLabel>
                     </IonItem>
-                    <IonItem onClick={() => auth.logout()}>
+                    <IonItem onClick={logout}>
                         <IonIcon icon={logOutOutline}/>
                         <SettingsLabel> Logg Ut</SettingsLabel>
                     </IonItem>
