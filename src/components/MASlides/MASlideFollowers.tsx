@@ -45,21 +45,17 @@ const MASlideFollowers = ({followers} : MASlideFollowers) => {
     return (
         <IonSlide style={{minHeight: '15rem'}}> 
             <MaxHeight>
-                <IonInfiniteScrollContent>
                 { data?.users.map( user => <Link style={{textDecoration: 'none'}} key={user.id} to={{
                         pathname:`/account/${user.id}`,
                         state:{id: user.id}
                         }}>
                             <User key={user.id} {...user}/>
                         </Link>)}
-                
-                </IonInfiniteScrollContent>
             </MaxHeight>
         </IonSlide>
     )
 }
 
 
-//<User key={user.id} {...user} />
 
 export default MASlideFollowers

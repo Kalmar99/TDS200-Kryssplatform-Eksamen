@@ -134,7 +134,6 @@ const MyPage = (props: any) => {
                
                 // Need to lock the slider so user cannot access settings slide while on another users page.
                 if(userSelf !== userId) {
-                    console.log(swiper)
                     swiper.allowSlideNext = false
                 } else {
                     swiper.allowSlideNext = true
