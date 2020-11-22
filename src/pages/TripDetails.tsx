@@ -1,8 +1,8 @@
-import { IonBackButton, IonButtons, IonContent, IonFooter, IonHeader, IonIcon, IonItem, IonModal, IonPage, IonSpinner, IonText } from '@ionic/react';
+import { IonBackButton, IonButtons, IonContent, IonFooter, IonHeader, IonIcon, IonItem, IonItemGroup, IonModal, IonPage, IonSpinner, IonText, IonToolbar } from '@ionic/react';
 import React, { useState } from 'react'
 import ITrip from '../models/ITrip'
 import ISection from '../models/ISection'
-import {arrowBack} from 'ionicons/icons'
+import {arrowBack, mapOutline} from 'ionicons/icons'
 import styled from 'styled-components';
 import gql from 'graphql-tag';
 import { useQuery, useSubscription } from '@apollo/client';
@@ -78,7 +78,6 @@ const TripDetails = ( props : any  ) => {
     let routes : Point[] = []
     if(trip.cords != undefined) {
 
-        console.log(JSON.parse(trip.cords))
         let array = JSON.parse(trip.cords)
         routes = array;
 
@@ -106,7 +105,11 @@ const TripDetails = ( props : any  ) => {
         <IonPage>
             <IonModal isOpen={mapDetail}>
                 <IonHeader>
-                    <p onClick={() => setMapDetail(false)}>Lukk</p>
+                    <IonToolbar>
+                        <IonIcon slot='start' style={{marginTop: '0.5rem', marginLeft: '0.5rem', }} size='large' icon={mapOutline}/>
+                        <h2 style={{marginLeft: '0.5rem'}} slot='start'>Kartvisning</h2>
+                        <CloseTxt slot='end' onClick={() => setMapDetail(false)}>Lukk</CloseTxt>
+                    </IonToolbar>
                 </IonHeader>
                 <IonContent>
                     <Map {...MapOptions}  container={{width: '100%', height: '90vh'}} />
@@ -136,7 +139,7 @@ const TripDetails = ( props : any  ) => {
                     {  routes.length > 0 && <h2>Turens lokasjon</h2>}
                 </Content>
                 { routes.length > 0 && <Content onClick={() => setMapDetail(true)}>
-                    <Map {...MapOptions}  />
+                   <div style={{width: '20rem',margin: 'auto'}}> <Map {...MapOptions}  /> </div>
                 </Content>}
                 <Content>
                     <h2>Anmeldelser</h2>
@@ -151,6 +154,11 @@ const TripDetails = ( props : any  ) => {
         </IonPage>
     )
 }
+
+const CloseTxt = styled.p`
+    color: #3686E2;
+    padding: 0.2rem;
+`;
 
 const HeaderWithImage = styled(IonHeader)`
 height: 15rem;
