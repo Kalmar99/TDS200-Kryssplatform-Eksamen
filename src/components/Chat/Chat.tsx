@@ -34,7 +34,7 @@ const Chat = ({messages,other,display} : Chat) => {
     let avatar = './assets/img/NoAvatar.png'
 
     const [message,setMessage] = useState<string>()
-    
+ 
     const [sendMessage] = useMutation(SEND_MESSAGE)
 
   
@@ -63,27 +63,36 @@ const Chat = ({messages,other,display} : Chat) => {
             <IonHeader>
                 <ChatToolbar>
                     <IonButtons slot='start'>
-                        <IonBackButton defaultHref='/chats' />
+                        <IonBackButton defaultHref='/home' text='Tilbake' />
                     </IonButtons>
                     <IonLabel>{other.display_name}</IonLabel>
                 </ChatToolbar>
             </IonHeader>
             <IonContent fullscreen>
-                <IonList>
+                <ChatList>
                     {orderMsgs.map((msg) => <Message key={msg.id} 
                                                                     content={msg} 
                                                                     senderAvatar={(msg.user.avatar_url !== undefined ? msg.user.avatar_url : avatar)} />) }
-                </IonList>
-                <IonFooter>
+                </ChatList>
+                <ChatBox>
                     <IonItem lines='none'>
                         <MsgInput rows={3} onChange={(e: any) => setMessage(e.target.value)} />
                         <SendBtn onClick={submitMessage}>Send</SendBtn>
                     </IonItem>
-                </IonFooter>
+                </ChatBox>
             </IonContent>
         </IonModal>
         )
 }
+
+const ChatList = styled(IonList)`
+    margin-bottom: 5rem;
+`;
+
+const ChatBox = styled(IonFooter)`
+    position: fixed;
+    bottom: 1rem;
+`;
 
 const MsgInput = styled.textarea`
     resize: none;
