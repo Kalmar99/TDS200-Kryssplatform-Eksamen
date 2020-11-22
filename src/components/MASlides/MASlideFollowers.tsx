@@ -47,6 +47,7 @@ const MASlideFollowers = ({followers} : MASlideFollowers) => {
             <MaxHeight>
                 { data?.users.map( user => <Link style={{textDecoration: 'none'}} key={user.id} to={{
                         pathname:`/account/${user.id}`,
+                        key: user.id,
                         state:{id: user.id}
                         }}>
                             <User key={user.id} {...user}/>

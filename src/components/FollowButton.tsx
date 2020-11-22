@@ -28,22 +28,27 @@ const FollowButton = ({target,user_id,followers} : FollowButton) => {
     const [mySelf,setMySelf] = useState(false)
 
     useEffect( () => {
+        
         getUserID().then( id => {
+            setMySelf(false)
             if(id === target) {
                 setMySelf(true)
                 return;
             }
 
             if(followers != undefined) {
+                // Need to set it to false first so that state is changed if user visits page that he/she does not follow.
+                setIsFollowing(false)   
                 //if the current viewing is following the account page he/she is currently on, display following instead of follow and disable the button;
                 followers.forEach( follower => {
                     if(follower.followed_by == user_id) {
+                        console.log(follower)
                         setIsFollowing(true)
                     }
                 })
             }
         })
-    })
+    },[target,user_id,followers])
 
     const getUserID = async () => {
         let id = await auth.getClaim('x-hasura-user-id')
@@ -82,7 +87,11 @@ const FollowButton = ({target,user_id,followers} : FollowButton) => {
 
     return (
         <div style={{textAlign: 'center'}}>
-            {followBtn}
+            
+            {!isFollowing && !mySelf ? 
+                <FollowButtonStyled style={{backgroundColor: '#3686E2'}} onClick={follow}>Følg</FollowButtonStyled> 
+                    : (isFollowing && target != user_id ? 
+                        <FollowButtonStyled style={{backgroundColor: 'transparent', border: '2px solid gray', color: 'gray'}} disabled={true}>Følger</FollowButtonStyled> : '')}
         </div>
     )
 }
